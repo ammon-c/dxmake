@@ -1,0 +1,69 @@
+/*
+==========================================================================
+touch.rc
+Resource definitions file for touch utility for Microsoft Windows.
+
+This source file is part of a computer program that is
+(C) Copyright 1985-1988, 1990, 1992 Ammon R. Campbell.
+All rights reserved.
+
+This source file contains trade secrets of the author and
+may not be disclosed without the express written consent
+of the author.
+==========================================================================
+*/
+
+/****************************** INCLUDES ********************************/
+
+#include <windows.h>
+
+#include "touchcid.h"
+#include "touchmsg.h"
+
+/****************************** RESOURCES *******************************/
+
+/* Application's icon. */
+
+DXTouch ICON touch.ico
+
+/* Dialog templates. */
+
+STARTUP_DLG_TEMPLATE DIALOG 8, 22, 254, 92
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION MSG_STARTUPTITLE
+FONT 8, "Helv"
+BEGIN
+    LTEXT           MSG_SRCDIR, -1, 6, 10, 62, 8
+    EDITTEXT        IDE_SRCDIR, 72, 8, 174, 12, ES_AUTOHSCROLL | WS_GROUP |
+			WS_TABSTOP
+    LTEXT           MSG_FILENAMES, -1, 6, 28, 44, 8
+    EDITTEXT        IDE_FILENAMES, 52, 26, 194, 12, ES_AUTOHSCROLL
+    CONTROL         MSG_NOCREAT,
+                    IDB_NOCREAT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 52, 
+                    40, 152, 10
+    LTEXT           MSG_TIME, -1, 6, 58, 36, 8
+    EDITTEXT        IDE_TIME, 44, 56, 50, 12, ES_AUTOHSCROLL
+    LTEXT           MSG_DATE, -1, 6, 76, 36, 8
+    EDITTEXT        IDE_DATE, 44, 74, 50, 12, ES_AUTOHSCROLL
+    DEFPUSHBUTTON   MSG_BOK, IDOK, 114, 72, 40, 14, WS_GROUP
+    PUSHBUTTON      MSG_BCANCEL, IDCANCEL, 160, 72, 40, 14
+    PUSHBUTTON      MSG_BHELP, IDB_HELP, 206, 72, 40, 14
+END
+
+ABOUT_DLG_TEMPLATE DIALOG 6, 18, 216, 126
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION MSG_ABOUTTITLE
+FONT 8, "Helv"
+BEGIN
+    CTEXT           MSG_APPNAME, -1, 0, 8, 216, 8
+    CTEXT           MSG_VERSIONSTRING, -1, 0, 18, 216, 8
+    CTEXT           MSG_ABOUTCOPYRIGHT, -1, 0, 36, 216, 8
+    LTEXT           MSG_ABOUTCOPYRIGHT2, -1, 6, 54, 204, 52
+    PUSHBUTTON      MSG_BOK, IDOK, 170, 106, 40, 14
+END
+
+/*
+==========================================================================
+End touch.rc
+==========================================================================
+*/

@@ -1,0 +1,21 @@
+;---------------------------------------------------------------------
+; touch.def
+; Module definition file for Touch utility.
+;---------------------------------------------------------------------
+
+NAME		TOUCH
+DESCRIPTION	'Touch utility for Windows'
+STUB		'touch_st.exe'
+EXETYPE		WINDOWS
+DATA		MOVEABLE MULTIPLE PRELOAD
+CODE		MOVEABLE DISCARDABLE PRELOAD
+HEAPSIZE	8192
+STACKSIZE	4096
+EXPORTS
+	main_window_proc	@1
+	startup_dlg_proc	@2
+	about_dlg_proc		@4
+
+;---------------------------------------------------------------------
+; End touch.def
+;---------------------------------------------------------------------

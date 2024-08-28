@@ -1,0 +1,23 @@
+;---------------------------------------------------------------------
+; make.def
+; Module definition file for Make utility.
+;---------------------------------------------------------------------
+
+NAME		MAKE
+DESCRIPTION	'Make utility for Windows'
+STUB		'make_st.exe'
+EXETYPE		WINDOWS
+DATA		MOVEABLE MULTIPLE PRELOAD
+CODE		MOVEABLE DISCARDABLE PRELOAD
+HEAPSIZE	32768
+STACKSIZE	8192
+EXPORTS
+	main_window_proc	@1
+	notify_proc		@2
+	startup_dlg_proc	@3
+	options_dlg_proc	@4
+	about_dlg_proc		@5
+
+;---------------------------------------------------------------------
+; End make.def
+;---------------------------------------------------------------------

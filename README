@@ -1,0 +1,89 @@
+
+                        PLEASE NOTE:
+
+           THIS IS AN ARCHIVE OF AN OLDER PROJECT
+            THAT HAS NOT BEEN UPDATED SINCE 1992.  
+
+
+=readme=for=DXMake=archive==================================
+
+
+             DXMake Program Maintenance Package
+              for MS-DOS and Microsoft Windows
+                        version 1.5
+
+
+============================================================
+COPYRIGHT AND LEGAL INFORMATION
+============================================================
+
+DXMake version 1.5 and the accompanying documentation and
+materials are Copyright 1985-1988, 1990, 1992 by Ammon R.
+Campbell.  All rights are reserved, except as stated in the
+following paragraph.
+
+You may use, copy, or distribute the DXMake software files
+and the accompanying materials and documentation,
+hereinafter referred to as the 'SOFTWARE', provided that:
+
+(a) You include the entire unmodified software package
+    including this document and all other accompanying
+    documentation and materials in any copy or distribution,
+
+(b) You clearly mark any additions or alterations to the
+    SOFTWARE as such and include prominently displayed
+    information about how to contact the party or parties
+    responsible for such additions or alterations in any
+    copy or distribution,
+
+(c) You do not sell, rent, lease, trade, or otherwise
+    exchange money, goods, or services for copies of or
+    distributions of the SOFTWARE or otherwise use the
+    SOFTWARE commercially with the sole exception that you
+    may request that recipients of such copies or
+    distributions reimburse you for media and shipping costs
+    associated with the distribution providing these costs
+    do not exceed ten US dollars per copy,
+
+(d) You do not take, send, or by your actions cause shipment
+    of the SOFTWARE or any portion thereof to any country
+    that does not recognize international copyright law,
+
+(e) You understand that the SOFTWARE is provided free of
+    charge, "AS IS", without warranty of any kind.  The
+    author disclaims all warranties including but not
+    limited to implied warranties of merchantability or
+    fitness for a particular purpose.  The entire risk
+    arising out of or resulting from the use of the software
+    and any accompanying materials rests entirely with the
+    user.
+
+
+============================================================
+RELEASE CONTENTS
+============================================================
+
+Version 1.5 of the DXMake package includes the following
+files:
+
+File Name   Description
+----------- ------------------------------------------------
+readme      This file.
+make.exe    Dual mode MS-DOS and Windows make utility.
+make.inf    Configuration file for make.exe.
+make.txt    Documentation for make.exe.
+touch.exe   Dual mode MS-DOS and Windows touch utility.
+touch.txt   Documentation for touch.exe.
+dxmake.hlp  On-line help for Microsoft Windows.
+
+
+============================================================
+ACKNOWLEDGEMENTS
+============================================================
+
+MS-DOS is a registered trademark of Microsoft Corporation.
+Microsoft Windows is a trademark of Microsoft Corporation.
+Any other trademarks are of their respective owners.
+
+
+=end=readme=================================================

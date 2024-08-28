@@ -1,0 +1,51 @@
+#--------------------------------------------------------------------
+# make.inf
+# Initialization file for DXMake.
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------
+# Default macros.
+#--------------------------------------------------------------------
+
+CC= cl
+AS= masm
+CFLAGS= -AS -Gs -Od -nologo
+LINK= link
+LFLAGS= /NOLOGO
+RC= rc
+RCFLAGS= -r
+
+#--------------------------------------------------------------------
+# Default rules.
+#--------------------------------------------------------------------
+
+.SUFFIXES:
+.SUFFIXES:	.exe .com .obj .res .c .asm .rc
+
+.asm.obj:
+	$(AS) $*;
+
+.asm.com:
+	$(AS) $*;
+	$(LINK) $(LFLAGS) $*.obj, $*.exe;
+	exe2bin $*.exe $@
+	del $*.exe
+
+.c.obj:
+	$(CC) -c $(CFLAGS) $<
+
+.c.exe:
+	$(CC) $(CFLAGS) $<
+
+.obj.com:
+	$(LINK) $(LFLAGS) $<, $*.exe;
+	exe2bin $*.exe $@
+	del $*.exe
+
+.obj.exe:
+	$(LINK) $(LFLAGS) $<, $@;
+
+.rc.res:
+	$(RC) $(RCFLAGS) $<
+
+# End make.inf

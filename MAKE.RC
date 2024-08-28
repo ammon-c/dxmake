@@ -1,0 +1,105 @@
+/*
+==========================================================================
+make.rc
+Resource definitions file for make utility for Microsoft Windows.
+
+This source file is part of a computer program that is
+(C) Copyright 1985-1988, 1990, 1992 Ammon R. Campbell.
+All rights reserved.
+
+This source file contains trade secrets of the author and
+may not be disclosed without the express written consent
+of the author.
+==========================================================================
+*/
+
+/****************************** INCLUDES ********************************/
+
+#include <windows.h>
+
+#include "makecid.h"
+#include "makemsg.h"
+
+/****************************** RESOURCES *******************************/
+
+/* Application's icon. */
+
+DXMake ICON make.ico
+
+/* Dialog templates. */
+
+STARTUP_DLG_TEMPLATE DIALOG 18, 18, 254, 86
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION MSG_STARTUPTITLE
+FONT 8, "Helv"
+BEGIN
+    LTEXT           MSG_SRCDIR, -1, 6, 10, 62, 8
+    EDITTEXT        IDE_SRCDIR, 72, 8, 174, 12, ES_AUTOHSCROLL
+    LTEXT           MSG_MAKEFILENAME, -1, 6, 28, 34, 8
+    EDITTEXT        IDE_MAKEFILENAME, 44, 26, 202, 12, ES_AUTOHSCROLL
+    LTEXT           MSG_TARGETNAMES, -1, 6, 46, 36, 8
+    EDITTEXT        IDE_TARGETNAMES, 44, 44, 202, 12, ES_AUTOHSCROLL
+    DEFPUSHBUTTON   MSG_BOK, IDOK, 58, 66, 40, 14, WS_GROUP
+    PUSHBUTTON      MSG_BCANCEL, IDCANCEL, 104, 66, 40, 14
+    PUSHBUTTON      MSG_BHELP, IDB_HELP, 150, 66, 40, 14
+    PUSHBUTTON      MSG_BOPTIONS, IDB_OPTIONS, 196, 66, 50, 14
+END
+
+OPTIONS_DLG_TEMPLATE DIALOG 6, 18, 254, 176
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION MSG_OPTIONSTITLE
+FONT 8, "Helv"
+BEGIN
+    CONTROL         MSG_OPTA, IDB_OPTA, 
+                    "Button", BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP, 8, 6, 
+                    240, 10
+    CONTROL         MSG_OPTC, IDB_OPTC, "Button", 
+                    BS_AUTOCHECKBOX | WS_TABSTOP, 8, 18, 240, 10
+    CONTROL         MSG_OPTD, IDB_OPTD, "Button", 
+                    BS_AUTOCHECKBOX | WS_TABSTOP, 8, 30, 240, 10
+    CONTROL         MSG_OPTE, IDB_OPTE, 
+                    "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 8, 42, 240, 10
+    CONTROL         MSG_OPTI, IDB_OPTI, "Button", 
+                    BS_AUTOCHECKBOX | WS_TABSTOP, 8, 54, 240, 10
+    CONTROL         MSG_OPTN, IDB_OPTN, 
+                    "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 8, 66, 240, 10
+    CONTROL         MSG_OPTP, IDB_OPTP,
+                    "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 8, 78, 240, 
+                    10
+    CONTROL         MSG_OPTQ, IDB_OPTQ,
+                    "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 8, 90, 240, 
+                    10
+    CONTROL         MSG_OPTR, IDB_OPTR,
+                    "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 8, 102, 240, 
+                    10
+    CONTROL         MSG_OPTS, IDB_OPTS,
+                    "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 8, 114, 240, 
+                    10
+    CONTROL         MSG_OPTT, IDB_OPTT,
+                    "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 8, 126, 240, 
+                    10
+    CONTROL         MSG_OPTY, IDB_OPTY,
+                    "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 8, 138, 240, 
+                    10
+    DEFPUSHBUTTON   MSG_BOK, IDOK, 114, 156, 40, 14, WS_GROUP
+    PUSHBUTTON      MSG_BCANCEL, IDCANCEL, 160, 156, 40, 14
+    PUSHBUTTON      MSG_BHELP, IDB_HELP, 206, 156, 40, 14
+END
+
+ABOUT_DLG_TEMPLATE DIALOG 6, 18, 216, 126
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION MSG_ABOUTTITLE
+FONT 8, "Helv"
+BEGIN
+    CTEXT           MSG_APPNAME, -1, 0, 8, 216, 8
+    CTEXT           MSG_VERSIONSTRING, -1, 0, 18, 216, 8
+    CTEXT           MSG_ABOUTCOPYRIGHT, -1, 0, 36, 216, 8
+    LTEXT           MSG_ABOUTCOPYRIGHT2, -1, 6, 54, 204, 52
+    PUSHBUTTON      MSG_BOK, IDOK, 170, 106, 40, 14
+END
+
+/*
+==========================================================================
+End make.rc
+==========================================================================
+*/

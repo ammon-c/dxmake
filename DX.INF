@@ -1,0 +1,12 @@
+"# dx.inf"				
+outfile=dxm150.exe			
+appname=DXMAKE version 1.50	
+message1=				
+message2=				
+file1=readme			
+file2=make.inf			
+file3=make.txt			
+file4=touch.txt			
+file5=make.exe			
+file6=touch.exe			
+file7=dxmake.hlp			

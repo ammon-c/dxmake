@@ -1,0 +1,19 @@
+; touch.hpj
+
+[OPTIONS]
+INDEX=INDEX
+COMPRESS=true
+TITLE=DXTouch
+
+[FILES]
+touch.rtf
+
+[MAP]
+#define NOTES			1013
+#define BUGS			1014
+#define ACKNOWLEDGEMENTS	1015
+; There are other topics in the file, but we don't
+; need context codes for them yet.
+
+[BITMAPS]
+

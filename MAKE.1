@@ -1,0 +1,826 @@
+.TH make 1 "DXMake version 1.5"
+.TF make
+.SH NAME
+make - script-driven build utility
+.br
+.SH SYNOPSIS
+.B make
+[options] [macro=string ...] [targetfile ...]
+.br
+.SH DESCRIPTION
+.B Make
+builds files based on instructions in a script file,
+called a
+.B makefile.
+The makefile describes each file
+that is to be built in terms of what other file(s) are needed to
+build the file and what commands must be executed to build the
+file.
+.sp
+The files that are to be built are called
+.B target
+.B files
+or
+.B targets.
+.sp
+The files that are needed to build a particular file are
+called
+.B dependent
+.B files
+or
+.B dependents.
+.sp
+By constructing an appropriate makefile for a particular target,
+it is possible to update the target quickly, because
+.B make
+will only execute commands for dependent files that have been
+changed, rather than executing all the the commands to build the
+target from scratch.
+.sp
+When
+.B make
+processes the makefile, it checks to see if each
+target file is
+.B up-to-date.
+A target is considered to be
+up-to-date if it exists and if its timestamp is at least as new
+as the timestamps of each of the dependent files.
+.sp
+In the makefile, the complete description of a particular target,
+including its dependents and commands, is called a
+.B target
+.B description.
+The template for a target description is shown below.
+.sp
+.po +10
+.nf
+    target [targets...] : [dependents...]
+        [command]
+            .
+            .
+        [command]
+.sp
+.po -10
+.fi
+The first line of a target description is written in the
+makefile as a target filename, followed by a colon (:), followed
+by the names of the target's dependent files.  The first line of
+a target description must be left justified (the first character
+on the line must be the first character of the target filename).
+Multiple target files can be listed on the same line if they use
+the same dependent files and commands.
+.sp
+The lines following the first line of the target description
+contain the commands that must be executed to build the target
+file.  Each of the command lines must be indented to distinguish
+them from lines which begin new target descriptions.
+.ne 6
+A command may be preceeded by one of the following command
+prefixes, which instruct
+.B make
+to treat the command specially:
+.sp
+.in +4
+.ti -4
+@
+.br
+Instructs
+.B make
+not to display the command as
+it is executed.  Normally
+.B make
+displays each command that it executes.
+.sp
+.ti -4
+-
+.br
+Instructs
+.B make
+to ignore the return code of
+the command.  Normally
+.B make
+stops processing immediately if a command returns with
+a return code other than zero.
+.sp
+.in -4
+For a brief example of a makefile, assume that a file 'test.obj'
+depends on the files 'test.c' and 'test.h' and that the command
+'cl -c -AS test.c' is used to build the target file 'test.obj'.
+The makefile might look like:
+.sp
+.po +10
+.nf
+    test.obj:  test.c test.h
+        cl -c -AS test.c
+.sp
+.po -10
+.fi
+When processing this makefile,
+.B make
+will check to see if
+'test.obj' exists and if it is at least as new as 'test.c' and
+'test.h'.  If 'test.obj' doesn't exist, or if 'test.c' or 'test.h'
+are newer,
+.B make
+executes the command 'cl -c test.c' to
+bring the target file up-to-date.  If either of the files 'test.c'
+or 'test.h' is missing,
+.B make
+will stop and output an error
+saying that it doesn't know how to make the missing dependent
+file.
+.sp
+If the makefile contains more than one target description,
+.B make
+will build the first target described in the makefile, unless other
+target(s) were given as arguments to
+.B make.
+.sp
+Target descriptions are treated recursively by
+.B make.
+If a dependent file for a particular target is also listed as a
+target elsewhere in the makefile,
+.B make
+will attempt to
+bring the dependent file up-to-date before checking to see if
+the original target is up-to-date.
+.sp
+Observe the following example:
+.sp
+.po +10
+.nf
+    test.exe:  test.obj test2.obj
+        link test test2, test.exe;
+
+    test.obj:  test.c test.h
+        cl -c -AS test.c
+
+    test2.obj:  test2.c test.h
+        cl -c -AS test2.c
+.sp
+.po -10
+.fi
+In the example (above),
+.B make
+will examine the target
+description for the target file 'test.exe', and see that it
+depends on the files 'test.obj' and 'test2.obj'.  Since these
+dependent files are also named as targets later in the makefile,
+.B make
+will examine those target descriptions to ensure
+that they are up-to-date before returning to 'test.exe' to
+ensure that it is up-to-date.
+.sp
+If 'test.c' or 'test.h' are newer than 'test.obj',
+.B make
+will execute the command 'cl -c test.c' to bring 'test.obj'
+up-to-date.
+.sp
+If 'test2.c' or 'test.h' are newer than 'test2.obj',
+.B make
+will execute the command 'cl -c test2.c' to bring 'test2.obj'
+up-to-date.
+.sp
+Now that the dependents for 'test.exe' are up-to-date,
+.B make
+will return to examine 'test.exe'.  If 'test.obj' or 'test2.obj'
+are newer than 'test.exe',
+.B make
+will execute the command
+'link test test2, test.exe;' to bring 'test.exe' up-to-date.
+.sp
+Note that the example makefile (above) could have been written
+as:
+.sp
+.po +10
+.nf
+    test.exe:  test.c test2.c test.h
+        cl -c -AS test.c
+        cl -c -AS test2.c
+        link test test2, test.exe;
+.sp
+.po -10
+.fi
+\...but this would execute all three commands even if only one
+of the files were out-of-date.  Generally, splitting up the
+build process for a particular target file into as many target
+descriptions as possible results in the most efficient makefile
+in terms of the number of commands executed per
+.B make
+session.
+.sp 2
+.B Macros
+.sp
+.B Make
+allows the makefile to be simplified by the use of macros.
+A macro definition assigns a string of text to a given name.  When
+the macro name is invoked later in the makefile, the string of text
+is inserted into the text where the macro invocation appears.
+.sp
+.ne 7
+A macro is defined by writing a macro name, an equal sign '=',
+and a string.  For example, to define a macro CFLAGS which
+will contain the string '-c -AS -Gs -Ox', the following would be
+written in the makefile:
+.sp
+.ti +4
+CFLAGS=-c -AS -Gs -Ox
+.sp
+Note that no space is used on either side of the equal sign.
+.sp
+To invoke a macro, a dollar sign '$', followed by the macro name
+inside of parenthesis, is written at the place in the makefile where
+the macro text should be inserted.  If the macro name is only one
+character long, the parenthesis are optional.
+.sp
+.ne 6
+The following makefile shows an example of a macro being defined
+and invoked:
+.sp
+.ne 11
+.po +10
+.nf
+    CFLAGS=-c -AS -Gs -Ox
+
+    test.exe: test.obj sample.obj
+        link test.obj sample.obj, test.exe;
+
+    test.obj: test.c test.h
+        cl $(CFLAGS) -Fotest.obj test.c
+
+    sample.obj: sample.c sample.h test.h
+        cl $(CFLAGS) -Fosample.obj sample.c
+.sp
+.po -10
+.fi
+In addition to macros defined in the makefile,
+.B make
+also reads the operating system environment, so that any string
+which is defined in the operating system environment may be
+invoked as a macro in the makefile.  If a macro is defined
+which has the same name as one of the environment strings,
+the environment string will be overriden by the macro definition,
+unless the '-e' option is used (this is explained in more
+detail later).
+.B
+In addition to macros defined in the makefile and macros read
+from the operating system environment,
+.B make
+understands several special macros:
+.sp
+.in +4
+.ti -4
+$*
+.br
+Expands to the basename of the targetfile
+(the targetfile's name minus the file extension).
+.sp
+.ti -4
+$@
+.br
+Expands to the filename of the current targetfile.
+.sp
+.ti -4
+$<
+.br
+Expands to the dependent file upon which an
+inference rule depends.  This macro may only be used
+within an inference rule description (rules will be
+explained later).
+.sp
+.ti -4
+$**
+.br
+Expands to a list of all the dependent files
+for the current target file.
+.sp
+.ti -4
+$?
+.br
+Expands to a list of the dependent files that
+are newer than the current target file.
+.sp
+.ne 15
+.in -4
+The previous example makefile could be simplified by the use
+of some of these special macros, as follows:
+.sp
+.ne 12
+.po +10
+.nf
+    CFLAGS=-c -AS -Gs -Ox
+
+    test.obj: test.c test.h
+        cl $(CFLAGS) -Fo$@ $*.c
+
+    sample.obj: sample.c sample.h test.h
+        cl $(CFLAGS) -Fo$@ $*.c
+
+    test.exe: test.obj sample.obj
+        link $**, $@;
+.sp
+.po -10
+.fi
+In addition to macros defined in the makefile, environment
+strings, and special macros, the following macros are predefined.
+.sp
+.in +4
+.ti -4
+MAKE
+.br
+is set to the name
+that
+.B make
+was invoked with.
+.sp
+.ti -4
+MAKEDIR
+.br
+is set to the name
+of the current directory at the
+time
+.B make
+is invoked.
+.sp
+.ti -4
+.br
+MAKEFLAGS
+.br
+is set to the command line options that
+.B make
+was invoked with (excluding '-f' and '-w').
+.sp
+.in -4
+The recommended procedure for reinvoking
+.B make
+inside of a
+makefile is to use the predefined macros MAKE and MAKEDIR rather
+than hard-coding a
+.B make
+command in the makefile, i.e.:
+.sp
+.ti +4
+$(MAKE) $(MAKEFLAGS) targets...
+.sp 2
+.B Inference
+.B Rules
+.sp
+The makefile may contain inference rules which describe how to build
+files with a particular file extension from files with another file
+extension.  An inference rule begins with a left-justified line
+containing a dot '.', followed by the file extension of the dependent
+file type, followed by another dot, followed by the file extension of
+the targetfile type, followed by a colon.  The following indented lines
+contain the commands that must be executed in order to build the
+targetfile from the dependent file.  For example, an inference rule to
+build ".obj" files from ".c" files might look as follows:
+.sp
+.ne 3
+.po +10
+.nf
+    .c.obj:
+        cl -c -AS -Gs -Ox -Fo$*.obj $<
+.sp
+.po -10
+.ne 15
+.fi
+Using an inference rule, we could further simplify the previous example
+makefile as follows:
+.sp
+.ne 13
+.po +10
+.nf
+    CFLAGS=-c -AS -Gs -Ox
+
+    .c.obj:
+        cl $(CFLAGS) -Fo$*.obj $<
+
+    test.obj: test.c
+
+    sample.obj: sample.c
+
+    test.exe: test.obj sample.obj
+        link $**, $@;
+.sp
+.po -10
+.fi
+In the above example,
+.B make
+will now infer how to build
+'test.obj' from 'test.c', and how to build
+'sample.obj' from 'sample.c', rather than requiring
+that the build command be placed under each ".obj"
+targetfile description.
+.sp
+.B Make
+may be given a list of suffixes to be searched for
+matches to inference rules, allowing the makefile to be
+further simplified.  The pseudo-target '.SUFFIXES' accomplishes
+this.  The symbol '.SUFFIXES' should be followed by a colon,
+and then a list of the suffixes to be handled.  For example:
+.sp
+.ne 10
+.po +10
+.nf
+    CFLAGS=-c -AS -Gs -Ox
+
+    .SUFFIXES: .c
+
+    .c.obj:
+        cl $(CFLAGS) -Fo$*.obj $<
+
+    test.exe: test.obj sample.obj
+        link $**, $@;
+.sp
+.po -10
+.fi
+Note that if '.SUFFIXES' is used without a list of extensions,
+any list from a previous '.SUFFIXES' statement will be erased.
+.sp
+In the example above,
+.B make
+will see that 'test.exe'
+depends on 'test.obj' and 'sample.obj'.  It will then decide
+that since there is no target description for 'test.obj',
+the suffixes will be tested.
+.B Make
+takes the basename
+from the file, in this case 'test', adds a suffix from the
+'.SUFFIXES', in this case '.c', and tests for the presence
+of the new filename, in this case 'test.c'.
+.B Make
+will then check if there is a rule for building the target file
+from the new filename.  In this example, there is a rule for
+building '.obj' files from '.c' files, so
+.B make
+will build 'test.obj' from 'test.c', providing the file 'test.c'
+exists.  This same process will be used for the undescribed
+target file 'sample.obj'.
+.sp 2
+.ne 8
+.B Psuedo-Targets
+.sp
+.B Make
+recognizes several psuedo-targets which modify the
+way
+.B make
+behaves.  The '.SUFFIXES' psuedo-target was
+explained previously.
+.sp
+.in +4
+.ti -4
+\.IGNORE
+.br
+instructs
+.B make
+to ignore the return codes of any commands it executes.  Normally
+.B make
+stop processing immediately if a command returns
+a non-zero exit code.
+.sp
+.ti -4
+\.PRECIOUS
+.br
+instructs
+.B make
+not to delete
+specific target files if a command to build the target fails
+to return with a zero exit code.  Normally
+.B make
+deletes the (presumably incorrect) target file if a command to build
+the target file returns with a non-zero exit code.  In the
+makefile, '.PRECIOUS' must be followed by a colon and one or
+more filenames which are not to be deleted.
+.sp
+.ti -4
+\.SILENT
+.br
+instructs
+.B make
+not to display commands.  Normally
+.B make
+displays each command as it is executed.
+.sp
+.in -4
+.sp
+.ne 5
+.B Directives
+.sp
+Directives modify the way
+.B make
+reads the makefile.
+Each directive begins with an exclamation mark (!) at the
+start of the line, followed by the directive name and any
+necessary arguments.  The directives recognized by
+.B make
+are described below.
+.sp
+.in +4
+.ti -4
+!IFDEF name
+.br
+reads lines normally from the makefile until
+a !ELSE or !ENDIF directive is encountered if the macro specified
+by the 'name' argument is defined; otherwise the following lines are
+skipped up to the next !ELSE or !ENDIF directive.
+.sp
+.ti -4
+!IFNDEF name
+.br
+reads lines normally from the makefile until
+a !ELSE or !ENDIF directive is encountered if the macro specified
+by the 'name' argument is not defined; otherwise the following lines
+are skipped up to the next !ELSE or !ENDIF directive.
+.sp
+.ti -4
+!ELSE
+.br
+If the lines following the previous !IFDEF or
+!IFNDEF were skipped, the lines following !ELSE will be read;
+otherwise the lines following !ELSE will be skipped up to the
+next !ENDIF directive.
+.sp
+.ti -4
+!ENDIF
+.br
+marks the end of the lines effected by the previous
+!IFDEF, !IFNDEF, or !ELSE directive.
+.sp
+.ne 5
+.ti -4
+!ERROR message
+.br
+instructs
+.B make
+to immediately stop processing
+the makefile and output the text specified by the 'message' argument.
+.sp
+.in -4
+Whitespace may optionally be inserted between the exclamation
+mark and the directive name, provided the exclamation mark remains
+the first character on the line.
+.sp
+Directives may be nested to a depth of seven levels.
+.sp 2
+.ne 5
+.B Other
+.B Features
+.sp
+Comments may be inserted into the makefile by placing a pound
+character (#) at the beginning of the comment line.
+.sp
+Long lines in the makefile may be split into multiple lines if
+necessary.  If
+.B make
+encounters a backslash '\\' at the end
+of a line, it assumes that the next line is a continuation of the
+same line.  In order to have a line that actually ends with a
+backslash, two backslashes must be placed at the end of the line.
+.sp
+.B Make
+can take default macros and inference rules from
+a configuration file.
+.B Make
+will search the current directory and the directories
+named in the MS-DOS PATH environment variable for a file called
+.B make.inf.
+If this file is found,
+.B make
+will read the macros and inference rules contained in it.  If macros or
+inference rules in the makefile conflict with those found in the
+configuration file, those defined in the makefile will take precedence.
+.sp 2
+.ne 5
+.B Options
+.sp
+.ne 5
+.in +4
+.ti -4
+-a
+.br
+Instructs
+.B make
+to build the targets
+even if they are not out-of-date.  Normally
+.B make
+only builds a target if its dependents are newer.
+.sp
+.ne 5
+.ti -4
+-c
+.br
+Instructs
+.B make
+to display its name, version,
+and coypright notice before processing the makefile.
+.sp
+.ne 5
+.ti -4
+-d
+.br
+Enables debugging output.
+.sp
+.ne 5
+.ti -4
+-e
+.br
+Causes strings from the operating system
+environment to override macros defined
+in the makefile.  Normally macros in the
+makefile have precedence.
+.sp
+.ne 5
+.ti -4
+-f
+.br
+Specifies what file to use as a makefile.
+The default is "Makefile".  The filename must
+immediately follow the 'f' in the argument list, with
+no intervening space.
+.sp
+.ne 5
+.ti -4
+-i
+.br
+Instructs
+.B make
+to ignore the return codes of executed commands.  By default,
+.B make
+will stop when a command returns a non-zero exit code.
+Using this option is the same as placing a '.IGNORE'
+psuedo-target in the makefile.
+.sp
+.ne 5
+.ti -4
+-n
+.br
+Instructs
+.B make
+to display commands but not execute them.
+.sp
+.ne 5
+.ti -4
+-p
+.br
+Instructs
+.B make
+to output the contents of
+its internal data structures, including macros, rules,
+suffixes, precious filenames, and targets.
+.sp
+.ne 5
+.ti -4
+-q
+.br
+Enables query mode.
+.B Make
+will perform no actions, but instead will return an exit code to
+indicate whether the specified targetfile(s) are up to
+date.  If the exit code is zero, the target(s) were
+determined to be up-to-date; otherwise one or more of
+the target(s) was determined to be out-of-date.
+.sp
+.ne 5
+.ti -4
+-r
+.br
+Disables reading of the initialization
+file.  Normally
+.B make
+reads macros and
+inference rules from the "make.inf" file, if
+found.
+.sp
+.ne 5
+.ti -4
+-s
+.br
+Enables silent mode, in which
+.B make
+will not display the commands that are executed.  Normally
+.B make
+displays each command as it is executed.  Using this option
+is the same as placing a '.SILENT' pseudo-target in the
+makefile.
+.sp
+.ne 5
+.ti -4
+-t
+.br
+Instructs
+.B make
+to update the timestamps
+on the targets instead of executing the commands to update
+the targets.
+.sp
+.ne 5
+.ti -4
+-w
+.br
+Specifies what directory to use as the current working
+directory.  The default is the current working directory
+at the time
+.B make
+is invoked.  The directory name must immediately follow
+the 'w' in the argument list, with no intervening space.
+.sp
+.ne 5
+.ti -4
+-y
+.br
+Instructs
+.B make
+to consider a targetfile to be
+up-to-date if its timestamp is newer than the timestamps
+of each of its dependent files; otherwise,
+.B make
+considers
+a targetfile to be up-to-date if its timestamp is newer
+than or equal to the timestamps of each of its dependent
+files.
+.sp
+.ne 5
+.ti -4
+-?
+.br
+Outputs the copyright and a summary of the
+program.  If this option is given, no other
+arguments may be given.  This option is not
+available when running under Microsoft
+Windows.
+.sp
+.in -4
+.ne 7
+.SH NOTES
+When running under MS-DOS, the default action performed by
+.B make
+when no command line arguments are given is to read
+the makefile named
+.B 'Makefile'
+and build the first target described therein.
+When running under Microsoft Windows, the
+default action performed by
+.B make
+when no command line arguments are given is to put up a
+dialog box from which the command line arguments can be
+chosen interactively.  Once the desired arguments have been
+chosen, clicking the 'OK' button continues execution
+with the chosen arguements, while clicking the 'Cancel'
+button terminates execution.
+.sp
+When running under MS-DOS, subprocesses invoked by
+.B make
+have less memory available to them than if invoked outside of
+.B make.
+.B Make
+uses approximately 50 kilobytes of memory
+when running (possibly more depending on the complexity
+of the makefile).
+.sp
+When running under Microsoft Windows, if
+.B make
+encounters an error, it will wait for a response at the
+keyboard before terminating.  Otherwise,
+.B make
+terminates as soon as it has completed building target file(s).
+.sp
+When running under Microsoft Windows,
+.B make
+uses TOOLHELP.DLL to check the return codes of each command
+that is executed.  If TOOLHELP.DLL is not present, or if a
+Microsoft Windows version prior to 3.1 is hosting
+.B make,
+the return codes of the commands executed by
+.B make
+cannot be checked, in which case
+.B make
+will assume that every command completes with a return
+code of zero.  If
+.B make
+does not detect TOOLHELP.DLL, a warning message will be
+displayed when
+.B make
+is invoked.
+.sp
+When running under Microsoft Windows,
+.B make
+may be aborted by using the mouse to access the Close menu
+item in the control-menu at the upper left-hand corner of
+the window.  If
+.B make
+is still executing a command when aborted, the command
+will continue to run after
+.B make
+terminates.
+.ne 3
+.SH FILES
+Makefile, make.inf
+.ne 6
+.SH BUGS
+The "$?" special macro does not work correctly; it expands to
+a list of all dependent files instead of just the out-of-date
+dependent files.
+.ne 3
+.SH ACKNOWLEDGEMENTS
+MS-DOS is a registered trademarks of Microsoft Corporation.
+Microsoft Windows is a trademark of Microsoft Corporation.

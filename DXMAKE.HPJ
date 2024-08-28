@@ -1,0 +1,14 @@
+; dxmake.hpj
+
+[OPTIONS]
+INDEX=INDEX
+COMPRESS=true
+TITLE=DXMake_1_5
+
+[FILES]
+dxmake.rtf
+
+[MAP]
+
+[BITMAPS]
+

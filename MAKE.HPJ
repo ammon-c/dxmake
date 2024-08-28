@@ -1,0 +1,14 @@
+; make.hpj
+
+[OPTIONS]
+INDEX=INDEX
+COMPRESS=true
+TITLE=DXMake
+
+[FILES]
+make.rtf
+
+[MAP]
+
+[BITMAPS]
+

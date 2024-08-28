@@ -1,0 +1,132 @@
+
+     touch (1)                DXTouch version 1.5                 touch (1)
+
+
+
+     NAME 
+          touch - touch file timestamp 
+
+     SYNOPSIS 
+          touch [options] file...  
+
+     DESCRIPTION 
+          Touch  changes  the  time/date of last modification for each
+          file argument.  
+
+          Options: 
+
+          -d 
+              Specifies the date to assign to each file.  The  default
+              is the  current system date.  The date must be specified
+              in MMDDYY format.  
+
+              Example: 
+
+                  touch -d061785 myfile 
+
+              would change the date on myfile to June 17, 1985.  
+
+          -t 
+              Specifies the time to assign to each file.  The  default
+              is the  current system time.  The time must be specified
+              in 24 HHMM format.  
+
+              Example: 
+
+                  touch -t0945 myfile 
+
+              would change the time on myfile to 9:45am.  
+
+                  touch -t1720 myfile 
+
+              would change the time on myfile to 17:20 (5:20pm).  
+
+          -w 
+              Specifies what directory to use as the  current  working
+              directory.  The default is the current working directory 
+              at the  time  make  is invoked.  The directory name must
+              immediately follow the 'w' in the argument list, with no 
+              intervening space.  
+
+          -?  
+              Outputs the copyright and a summary of the program.   If
+              this  argument  is  given,  no  other  arguments  may be
+              given.  This option is not available when running  under
+              Microsoft Windows.  
+
+
+
+
+
+
+
+
+
+     touch                            -1-                             touch
+
+
+     touch (1)                DXTouch version 1.5                 touch (1)
+
+
+     NOTES 
+          When  running  under  MS-DOS, invoking touch with no command
+          line arguments  is  considered  an  error,  and  causes  the
+          message "no  files  specified" to be displayed.  However, if
+          touch is invoked with no command line arguments when running 
+          under Microsoft Windows, a  dialog  box  is  activated  from
+          which   the   command   line   arguments   can   be   chosen
+          interactively.  Once the desired arguments have been chosen, 
+          clicking the 'OK' button continues execution with the chosen 
+          arguements, while clicking the  'Cancel'  button  terminates
+          execution.  
+
+     FILES 
+          None.  
+
+     BUGS 
+          None known.  
+
+     ACKNOWLEDGEMENTS 
+          MS-DOS  is a registered trademarks of Microsoft Corporation.
+          Microsoft Windows is a trademark of Microsoft Corporation.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     touch                            -2-                             touch
+
