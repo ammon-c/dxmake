@@ -110,7 +110,7 @@ load_env(menvp)
 		menvp++;
 	}
 	return 1;
-} /* End load_env() */
+}
 
 /*
 ** find_inifile:
@@ -162,7 +162,7 @@ find_inifile(str)
 
 	/* INI file not found. */
 	return 0;
-} /* End find_inifile() */
+}
 
 /*
 ** usage:
@@ -180,7 +180,7 @@ usage(void)
 	mputs(MSG_SIGNON);
 	mputs(MSG_COPYRIGHT);
 	mputs(MSG_USAGE);
-} /* End usage() */
+}
 
 /*
 ** initialize:
@@ -219,7 +219,7 @@ initialize(void)
 	init_suffixes();		/* Suffixes list is empty. */
 
 	return 1;
-} /* End initialize() */
+}
 
 /*
 ** deinitialize:
@@ -252,7 +252,7 @@ deinitialize(void)
 	/* Shut down memory handler. */
 	mem_deinit();
 
-} /* End deinitialize() */
+}
 
 /*
 ** errstop:
@@ -286,7 +286,7 @@ errstop(void)
 		DispatchMessage((LPMSG)&msg);
 	}
 #endif /* WIN */
-} /* End errstop() */
+}
 
 /****************************** FUNCTIONS ***************************/
 
@@ -713,10 +713,5 @@ main(argc, argv, envp)
 
 	/* No errors. */
 	return 0;
-} /* End main() */
+}
 
-/*
-======================================================================
-End make.c
-======================================================================
-*/

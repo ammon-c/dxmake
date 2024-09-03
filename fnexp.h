@@ -26,15 +26,13 @@ Rules for limited regular expressions:
 	[n-m]	Matches any single character between `n' and `m',
 		inclusive.
 
-//	\n	Matches the character `n', where `n' may be a normal
-//		character, or may be one of the special characters
-//		`*', `?', or `['.
+	\n	Matches the character `n', where `n' may be a normal
+		character, or may be one of the special characters
+		`*', `?', or `['.
 
 Any other character matches itself.
 =========================================================================
 */
-
-/****************************** HEADERS *******************************/
 
 /*
 ** check_rexp:
@@ -55,8 +53,3 @@ Any other character matches itself.
 */
 int	check_rexp(char *str, char *rexp);
 
-/*
-=========================================================================
-End fnexp.h
-=========================================================================
-*/

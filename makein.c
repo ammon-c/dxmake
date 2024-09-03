@@ -85,8 +85,6 @@ static int local_read_logical_line(int handle, char *str, int maxlen);
 #define MAXIO	1024	/* Size of I/O buffer. */
 #define MAXIFS	8	/* Maximum nesting level of !IFs. */
 
-	/* Also see "make.h" */
-
 /****************************** VARIABLES ***************************/
 
 /* iobfr:  Buffer for data read from makefile. */
@@ -100,8 +98,6 @@ static char *unread_lbfr;
 /* ifmode:  Flag, 0=normal, 1=doing inside !IF, 2=skipping inside !IF */
 static char	ifmode[MAXIFS];
 static int	iflevel;
-
-	/* Also see "make.h" */
 
 /*************************** LOCAL FUNCTIONS ************************/
 
@@ -156,9 +152,8 @@ do_psuedo(line)
 		return 0;
 	}
 
-	/* Success! */
 	return 1;
-} /* End do_psuedo() */
+}
 
 /*
 ** line_type:
@@ -334,7 +329,7 @@ line_type(line)
 
 	/* Unrecognized line. */
 	return 0;
-} /* End line_type() */		
+}
 
 /*
 ** init_input_buffers:
@@ -376,9 +371,8 @@ init_input_buffers(void)
 
 	iflevel = -1;
 
-	/* Success! */
 	return 1;
-} /* End init_input_buffers() */
+}
 
 /*
 ** deinit_input_buffers:
@@ -412,7 +406,7 @@ deinit_input_buffers(void)
 	unread_lbfr = (char *)NULL;
 
 	iflevel = -1;
-} /* End deinit_input_buffers() */
+}
 
 /*
 ** local_read_logical_line:
@@ -582,9 +576,8 @@ local_read_logical_line(handle, str, maxlen)
 		mem_free(tmp);
 	}
 
-	/* Success! */
 	return 1;
-} /* End local_read_logical_line() */
+}
 
 /****************************** FUNCTIONS ***************************/
 
@@ -630,9 +623,8 @@ unread_logical_line(str)
 	/* Copy line to unread buffer. */
 	strcpy(unread_lbfr, str);
 
-	/* Success! */
 	return 1;
-} /* End unread_logical_line() */
+}
 
 /*
 ** read_logical_line:
@@ -906,7 +898,7 @@ read_logical_line(handle, str, maxlen)
 	while (!haveline);
 
 	return result;
-} /* End read_logical_line() */
+}
 
 /*
 ** process_makefile:
@@ -1021,18 +1013,9 @@ process_makefile(mf)
 		return 0;
 	}
 
-	/* Close the makefile. */
 	mclose(mh);
-
-	/* Deinitialize input buffers. */
 	deinit_input_buffers();
 
-	/* No errors. */
 	return 1;
-} /* End process_makefile() */
+}
 
-/*
-======================================================================
-End makein.c
-======================================================================
-*/

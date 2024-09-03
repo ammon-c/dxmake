@@ -45,8 +45,6 @@ Make's 'special macros' include the following:
 ======================================================================
 */
 
-/****************************** INCLUDES ****************************/
-
 #ifdef WIN
 # include <windows.h>
 #endif /* WIN */
@@ -63,25 +61,6 @@ Make's 'special macros' include the following:
 #include "getpath.h"
 #include "fnexp.h"
 #include "wild.h"
-
-/****************************** HEADERS *****************************/
-
-/* Functions that are local to this file: */
-/* NONE */
-
-/****************************** CONSTANTS ***************************/
-
-	/* See "make.h" */
-
-/****************************** VARIABLES ***************************/
-
-	/* See "make.h" */
-
-/*************************** LOCAL FUNCTIONS ************************/
-
-	/* NONE */
-
-/****************************** FUNCTIONS ***************************/
 
 /*
 ** expand_named_macros:
@@ -322,11 +301,10 @@ expand_named_macros(src, dest, maxlen)
 	/* Place null at end of expanded string. */
 	dest[dpos] = '\0';
 
-	/* Success! */
 	if (did)
 		return 2;
 	return 1;
-} /* End expand_named_macros() */
+}
 
 /*
 ** expand_wildcard:
@@ -398,9 +376,8 @@ expand_wildcard(fspec)
 	if (names == (LINE *)NULL)
 		return (LINE *)NULL;
 
-	/* Success! */
 	return names;
-} /* End expand_wildcard() */
+}
 
 /*
 ** expand_dependents:
@@ -527,9 +504,8 @@ expand_dependents(tar)
 		}
 	}
 
-	/* Success! */
 	return dlhead;
-} /* End expand_dependents() */
+}
 
 /*
 ** expand_tarspecial:
@@ -777,15 +753,8 @@ expand_tarspecial(src, dest, maxlen, tfile, sfile)
 		}
 	} /* End while() */
 
-	/* Put terminating null on expanded string. */
 	dest[dpos] = '\0';
 
-	/* Success! */
 	return 1;
-} /* End expand_tarspecial() */
+}
 
-/*
-======================================================================
-End makexpnd.c
-======================================================================
-*/

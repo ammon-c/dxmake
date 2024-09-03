@@ -43,16 +43,10 @@ invocation (expansion) of macros is handled elsewhere.
 /* Prototypes for functions local to this module: */
 static int	add_macro(char *name, char *data);
 
-/****************************** CONSTANTS ***************************/
-
-	/* See "make.h" file. */
-
 /****************************** VARIABLES ***************************/
 
 /* macro_list:  Linked list of defined macros. */
 static MACRO *macro_list;
-
-	/* Also see "make.h" file. */
 
 /*************************** LOCAL FUNCTIONS ************************/
 
@@ -133,9 +127,8 @@ add_macro(name, data)
 		mptr->mnext = mac;
 	}
 
-	/* Success! */
 	return 1;
-} /* End add_macro() */
+}
 
 /****************************** FUNCTIONS ***************************/
 
@@ -154,9 +147,8 @@ add_macro(name, data)
 void
 init_macros(void)
 {
-	/* Macro list is initially empty. */
 	macro_list = (MACRO *)NULL;
-} /* End init_macros() */
+}
 
 /*
 ** predefine_macros:
@@ -237,7 +229,7 @@ predefine_macros(void)
 		tmp[0] = '\0';
 	if (!add_macro("MAKEFLAGS", tmp))
 		return 0;
-} /* End predefine_macros() */
+}
 
 /*
 ** flush_macros:
@@ -271,9 +263,8 @@ flush_macros(void)
 		m = m2;
 	}
 
-	/* Mark macro list as empty. */
 	macro_list = (MACRO *)NULL;
-} /* End flush_macros() */
+}
 
 /*
 ** find_macro:
@@ -308,7 +299,7 @@ find_macro(mname)
 	}
 
 	return mfound;
-} /* End find_macro() */
+}
 
 /*
 ** define_macro:
@@ -384,9 +375,8 @@ define_macro(line, handle)
 		return 0;
 	}
 
-	/* Success! */
 	return 1;
-} /* End define_macro() */
+}
 
 /*
 ** dump_macros:
@@ -418,10 +408,5 @@ dump_macros(void)
 
 		mptr = mptr->mnext;
 	}
-} /* End dump_macros() */
+}
 
-/*
-======================================================================
-End makemac.c
-======================================================================
-*/

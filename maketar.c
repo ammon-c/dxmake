@@ -47,16 +47,10 @@ void	free_target_tree(TARGET *t);
 static TARGET	*dup_target(TARGET *tar, char *tname);
 static int	add_target(TARGET *tar);
 
-/****************************** CONSTANTS ***************************/
-
-	/* See "make.h" file. */
-
 /****************************** VARIABLES ***************************/
 
 /* target_list:  Linked list of defined targets. */
 static TARGET *target_list;
-
-	/* Also see "make.h" file. */
 
 /*************************** LOCAL FUNCTIONS ************************/
 
@@ -94,7 +88,7 @@ free_target_tree(t)
 
 	/* Free the target descriptor structure. */
 	mem_free(t);
-} /* End free_target_tree() */
+}
 #endif /* BT_TARGETS */
 
 /*
@@ -195,7 +189,7 @@ add_target(tar)
 	}
 
 	return 1;
-} /* End add_target() */
+}
 
 /*
 ** dup_target:
@@ -283,9 +277,8 @@ dup_target(tar, tname)
 		}
 	}
 
-	/* Success! */
 	return newtar;
-} /* End dup_target() */
+}
 
 /****************************** FUNCTIONS ***************************/
 
@@ -305,7 +298,7 @@ void
 init_targets(void)
 {
 	target_list = (TARGET *)NULL;
-} /* End init_targets() */
+}
 
 /*
 ** default_target:
@@ -328,7 +321,7 @@ default_target(void)
 		return (char *)NULL;
 
 	return target_list->tname;
-} /* End default_target() */
+}
 
 /*
 ** find_target:
@@ -389,7 +382,7 @@ find_target(tname)
 #endif /* BT_TARGETS */
 
 	return (TARGET *)NULL;
-} /* End find_target() */
+}
 
 /*
 ** flush_targets:
@@ -432,9 +425,8 @@ flush_targets(void)
 	}
 #endif
 
-	/* Mark target list as empty. */
 	target_list = (TARGET *)NULL;
-} /* End flush_targets() */
+}
 
 /*
 ** define_target:
@@ -699,10 +691,9 @@ define_target(line, handle)
 		nptr = nptr->lnext;
 	}
 
-	/* Success! */
 	free_lines(names);
 	return 1;
-} /* End define_target() */
+}
 
 /*
 ** dump_targets:
@@ -754,10 +745,5 @@ dump_targets(void)
 		tptr = tptr->tnext;
 	}
 #endif /* BT_TARGETS */
-} /* End dump_targets() */
+}
 
-/*
-======================================================================
-End maketar.c
-======================================================================
-*/

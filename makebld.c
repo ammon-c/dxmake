@@ -59,10 +59,6 @@ static int	expand_dspecial(TARGET *tar, char *cmd);
 /* Maximum number of arguments per subprocess command line. */
 #define MAXARGS		20
 
-/****************************** VARIABLES ***************************/
-
-	/* See "make.h" */
-
 /*************************** LOCAL FUNCTIONS ************************/
 
 /*
@@ -181,7 +177,7 @@ find_rule(tname, srcname)
 
 	/* No matching rules. */
 	return (RULE *)NULL;
-} /* End find_rule() */
+}
 
 /*
 ** timestamp_up_to_date:
@@ -221,7 +217,7 @@ timestamp_up_to_date(t1, t2)
 			return 1;
 	}
 	return 0;
-} /* End timestamp_up_to_date() */
+}
 
 /*
 ** make_dependents:
@@ -293,12 +289,9 @@ make_dependents(tar, level, hitime)
 		lptr = lptr->lnext;
 	}
 
-	/* Free the expanded dependent list. */
 	free_lines(dptr);
-
-	/* No errors. */
 	return 1;
-} /* End make_dependents() */
+}
 
 /*
 ** expand_dspecial:
@@ -473,12 +466,9 @@ expand_dspecial(tar, cmd)
 	/* Return expanded command line to caller. */
 	strcpy(cmd, tmp);
 
-	/* Free the temporary buffer. */
 	mem_free(tmp);
-
-	/* Success! */
 	return 1;
-} /* End expand_dspecial() */
+}
 
 /*
 ** run_command:
@@ -512,10 +502,6 @@ run_command(cmd)
 	/* Make sure the command line isn't too long. */
 	if (strlen(cmd) > MAXPATH)
 	{
-		/*
-		** The command line exceeds the maximum length
-		** for a command line.
-		*/
 		errmsg(MSG_ERR_CMDTOOLONG, cmd, NOVAL);
 		return 0;
 	}
@@ -697,7 +683,7 @@ run_command(cmd)
 #endif /* WIN */
 
 	return 1;
-} /* End run_command() */
+}
 
 /*
 ** run_commands:
@@ -805,7 +791,7 @@ run_commands(tname, tar, rul)
 	}
 
 	return 1;
-} /* End run_commands() */
+}
 
 /****************************** FUNCTIONS ***************************/
 
@@ -1362,12 +1348,6 @@ make_target(tname, level, hitime)
 			*hitime = tstat.st_mtime;
 	}
 
-	/* No errors. */
 	return 1;
-} /* End make_target() */
+}
 
-/*
-======================================================================
-End makebld.c
-======================================================================
-*/

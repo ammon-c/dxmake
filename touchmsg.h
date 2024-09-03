@@ -21,8 +21,6 @@ error messages, status messages, and debug messages.
 ======================================================================
 */
 
-/******************************* CONSTANTS **************************/
-
 /* Option switch characters. */
 #define OPT_NOCREATE		'c'
 #define OPT_DATE		'd'
@@ -98,8 +96,3 @@ usage:  touch [options] file ...\n\
 #define MSG_ERR_MAXARGS		"\
 Maximum number of arguments exceeded in spawned command"
 
-/*
-======================================================================
-End touchmsg.h
-======================================================================
-*/

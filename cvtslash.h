@@ -11,11 +11,18 @@ of the author.
 ==========================================================================
 */
 
-/* Prototype: */
+/*
+** cvt_slash:
+** Converts all occurrences of a slash ('/') in a string to a
+** backslash ('\').
+**
+** Parameters:
+**	Name	Description
+**	----	-----------
+**	str	String to be converted.
+**
+** Returns:
+**	NONE
+*/
 void cvt_slash(char *str);
 
-/*
-==========================================================================
-End cvtslash.h
-==========================================================================
-*/

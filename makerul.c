@@ -37,16 +37,10 @@ of rules to files during the build process is handled elsewhere.
 
 #include "make.h"
 
-/****************************** CONSTANTS ***************************/
-
-	/* See 'make.h' file. */
-
 /****************************** VARIABLES ***************************/
 
-/* rule_list:  Linked list of defined rules. */
+/* Linked list of defined rules. */
 static RULE *rule_list;
-
-	/* Also see 'make.h' file. */
 
 /****************************** FUNCTIONS ***************************/
 
@@ -66,7 +60,7 @@ void
 init_rules(void)
 {
 	rule_list = (RULE *)NULL;
-} /* End init_rules() */
+}
 
 /*
 ** flush_rules:
@@ -103,9 +97,8 @@ flush_rules(void)
 		r = r2;
 	}
 
-	/* Mark rule list as empty. */
 	rule_list = (RULE *)NULL;
-} /* End flush_rules() */
+}
 
 /*
 ** define_rule:
@@ -336,9 +329,8 @@ define_rule(line, handle)
 		rul->rcommands = ltmp;
 	} /* End while(1) */
 
-	/* Success! */
 	return 1;
-} /* End define_rule() */
+}
 
 /*
 ** dump_rules:
@@ -380,7 +372,7 @@ dump_rules(void)
 
 		rptr = rptr->rnext;
 	}
-} /* End dump_rules() */
+}
 
 /*
 ** check_rules:
@@ -419,7 +411,7 @@ check_rules(suf)
 	}
 
 	return 0;
-} /* End check_rules() */
+}
 
 /*
 ** lookup_rule:
@@ -472,10 +464,5 @@ lookup_rule(src, dest)
 
 	/* Didn't find the rule we're looking for. */
 	return (RULE *)NULL;
-} /* End lookup_rule() */
+}
 
-/*
-======================================================================
-End makerul.c
-======================================================================
-*/

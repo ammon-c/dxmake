@@ -21,8 +21,6 @@ error messages, status messages, and debug messages.
 ======================================================================
 */
 
-/******************************* CONSTANTS **************************/
-
 /* Option switch characters. */
 #define OPT_MAKEFILE		'f'
 #define OPT_WORKINGDIR		'w'
@@ -209,8 +207,3 @@ info:  No targets on command line; assuming "
 #define MSG_INFO_TCMDHDR	"info:     Commands:\n"
 #define MSG_INFO_TCMDNAME	"info:        "
 
-/*
-======================================================================
-End makemsg.h
-======================================================================
-*/

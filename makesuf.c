@@ -51,24 +51,10 @@ line contains one filename suffix.
 
 #include "make.h"
 
-/****************************** HEADERS *****************************/
-
-	/* See "make.h" */
-
-/****************************** CONSTANTS ***************************/
-
-	/* See "make.h" */
-
 /****************************** VARIABLES ***************************/
 
 /* suffixes_list:  Linked list of suffix (file extension) names. */
 static LINE *suffixes_list;
-
-	/* Also see "make.h" */
-
-/*************************** LOCAL FUNCTIONS ************************/
-
-	/* See "make.h" file. */
 
 /****************************** FUNCTIONS ***************************/
 
@@ -88,7 +74,7 @@ void
 init_suffixes(void)
 {
 	suffixes_list = (LINE *)NULL;
-} /* End init_suffixes() */
+}
 
 /*
 ** flush_suffixes:
@@ -109,7 +95,7 @@ flush_suffixes(void)
 {
 	free_lines(suffixes_list);
 	suffixes_list = (LINE *)NULL;
-} /* End flush_suffixes() */
+}
 
 /*
 ** do_suffixes:
@@ -211,9 +197,8 @@ do_suffixes(line)
 		flush_suffixes();
 	}
 
-	/* Success! */
 	return 1;
-} /* End do_suffixes() */
+}
 
 /*
 ** enum_suffix:
@@ -259,7 +244,7 @@ enum_suffix(index)
 
 	/* Return pointer to suffix name. */
 	return (char *)lptr->ldata;
-} /* End enum_suffix() */
+}
 
 /*
 ** dump_suffixes:
@@ -290,10 +275,5 @@ dump_suffixes(void)
 		mputs("\n");
 		lptr = lptr->lnext;
 	}
-} /* End dump_suffixes() */
+}
 
-/*
-======================================================================
-End makesuf.c
-======================================================================
-*/

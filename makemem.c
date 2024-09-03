@@ -37,22 +37,6 @@ environment specific details of memory handling.
 
 #include "make.h"
 
-/****************************** HEADERS *****************************/
-
-	/* See "make.h" file. */
-
-/****************************** CONSTANTS ***************************/
-
-	/* See "make.h" file. */
-
-/****************************** VARIABLES ***************************/
-
-	/* See "make.h" file. */
-
-/*************************** LOCAL FUNCTIONS ************************/
-
-	/* NONE */
-
 /****************************** FUNCTIONS ***************************/
 
 /*
@@ -72,7 +56,7 @@ int
 mem_init(void)
 {
 	return 1;
-} /* End mem_init() */
+}
 
 /*
 ** mem_deinit:
@@ -91,7 +75,7 @@ int
 mem_deinit(void)
 {
 	return 1;
-} /* End mem_deinit() */
+}
 
 /*
 ** mem_alloc:
@@ -120,7 +104,7 @@ mem_alloc(size_t bytes)
 	*/
 	return (void *)LocalAlloc(LPTR, bytes);
 #endif /* WIN */
-} /* End mem_alloc() */
+}
 
 /*
 ** mem_free:
@@ -145,7 +129,7 @@ mem_free(void *ptr)
 	*/
 	LocalFree((HLOCAL)ptr);
 #endif /* WIN */
-} /* End mem_free() */
+}
 
 /*
 ** mem_heapmin:
@@ -175,10 +159,5 @@ mem_heapmin(void)
 	*/
 	_heapmin();
 #endif /* WIN */
-} /* End mem_heapmin() */
+}
 
-/*
-======================================================================
-End makemem.c
-======================================================================
-*/

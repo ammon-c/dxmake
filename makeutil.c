@@ -29,14 +29,6 @@ of the author.
 
 #include "make.h"
 
-/****************************** HEADERS *****************************/
-
-	/* Also see "make.h" file. */
-
-/****************************** CONSTANTS ***************************/
-
-	/* See "make.h" file. */
-
 /****************************** VARIABLES ***************************/
 
 /*
@@ -48,8 +40,6 @@ static char locpath[MAXPATH];
 ** Temporary pathname pointer used by enumpath().
 */
 static char *pathptr;
-
-	/* Also see "make.h" file. */
 
 /****************************** FUNCTIONS ***************************/
 
@@ -198,9 +188,8 @@ get_part_filename(part, src, dest)
 	/* Add terminating null to dest. */
 	dest[dpos] = '\0';
 
-	/* Success! */
 	return 1;
-} /* End get_part_filename() */
+}
 
 /*
 ** touch_file:
@@ -249,9 +238,8 @@ touch_file(name)
 	if (dosregs.x.cflag)
 		return 0;	/* Error occurred. */
 
-	/* Success! */
 	return 1;
-} /* End touch_file() */
+}
 
 /*
 ** mutoa:
@@ -289,7 +277,7 @@ mutoa(val)
 	}
 
 	return &s[pos + 1];
-} /* End mutoa() */
+}
 
 #ifdef NOTUSED
 /*
@@ -328,7 +316,7 @@ multoa(val)
 	}
 
 	return &s[pos + 1];
-} /* End multoa() */
+}
 #endif
 
 /*
@@ -371,7 +359,7 @@ mputs(s)
 		wputc(*s++);
 	}
 #endif /* WIN */
-} /* End mputs() */
+}
 
 /*
 ** mchdir:
@@ -431,12 +419,11 @@ mchdir(LPSTR dname)
 		}
 	}
 
-	/* Success! */
 #ifdef WIN
 	SetErrorMode(0);
 #endif /* WIN */
 	return 1;
-} /* End mchdir() */
+}
 
 /*
 ** mopen_r:
@@ -468,13 +455,11 @@ mopen_r(fname)
 	dosregs.h.al = 0;		/* 0 = open for reading. */
 	intdos(&dosregs, &dosregs);
 
-	/* Check for error. */
 	if (dosregs.x.cflag)
 		return -1;	/* Error occurred. */
 
-	/* Return file handle to caller. */
 	return (int)dosregs.x.ax;
-} /* End mopen_r() */
+}
 
 /*
 ** mclose:
@@ -506,7 +491,7 @@ mclose(fh)
 	if (dosregs.x.cflag)
 		return -1;
 	return 0;
-} /* End mclose() */
+}
 
 /*
 ** mread:
@@ -542,13 +527,12 @@ mread(fh, bfr, count)
 	dosregs.x.cx = count;		/* CX gets number of bytes to read. */
 	intdos(&dosregs, &dosregs);
 
-	/* Check for error. */
 	if (dosregs.x.cflag)
 		return -1;
 
 	/* Return number of bytes read. */
 	return (int)dosregs.x.ax;
-} /* End mread() */
+}
 
 /*
 ** mstat:
@@ -581,11 +565,9 @@ mstat(fname, tstat)
 	dosregs.h.al = 0;		/* 0 = open for reading. */
 	intdos(&dosregs, &dosregs);
 
-	/* Check for error. */
 	if (dosregs.x.cflag)
 		return -1;	/* Error occurred. */
 
-	/* Save file handle. */
 	handle = (int)dosregs.x.ax;
 
 	/* Get time/date of file. */
@@ -602,7 +584,7 @@ mstat(fname, tstat)
 		dosregs.x.bx = handle;	/* BX gets file handle. */
 		intdos(&dosregs, &dosregs);
 
-		return -1;	/* Error occurred. */
+		return -1;
 	}
 
 	/* Save time/date stamp in caller's structure. */
@@ -615,13 +597,11 @@ mstat(fname, tstat)
 	dosregs.x.bx = handle;	/* BX gets file handle. */
 	intdos(&dosregs, &dosregs);
 
-	/* Check for error. */
 	if (dosregs.x.cflag)
 		return -1;	/* Error occurred. */
 
-	/* Success! */
 	return 0;
-} /* End mstat() */
+}
 
 /*
 ** enumpath:
@@ -704,7 +684,7 @@ enumpath(flag, envvar)
 #endif
 		return (char *)NULL;
 	}
-} /* End enumpath() */
+}
 
 /*
 ** errmsg:
@@ -744,7 +724,7 @@ errmsg(msg, sval, dval)
 		mputs(mutoa(dval));
 	}
 	mputs("\n");
-} /* End errmsg() */
+}
 
 /*
 ** free_lines:
@@ -771,7 +751,7 @@ free_lines(lptr)
 		mem_free(lptr);
 		lptr = ltmp;
 	}
-} /* End free_lines() */
+}
 
 /*
 ** create_line:
@@ -817,7 +797,7 @@ create_line(s)
 	l->lnext = (LINE *)NULL;
 
 	return l;
-} /* End create_line() */
+}
 
 /*
 ** append_line:
@@ -862,9 +842,8 @@ append_line(lhead, s)
 		lptr->lnext->lnext = (LINE *)NULL;
 	}
 
-	/* Success! */
 	return lhead;
-} /* End append_line() */
+}
 
 /*
 ** dup_lines:
@@ -922,7 +901,7 @@ dup_lines(lorg)
 	}
 
 	return lnew;
-} /* End dup_lines() */
+}
 
 /*
 ** cindex:
@@ -955,10 +934,5 @@ cindex(s, c)
 	}
 
 	return -1;
-} /* End cindex() */
+}
 
-/*
-======================================================================
-End makeutil.c
-======================================================================
-*/

@@ -295,7 +295,7 @@ WinMain(HANDLE hInstance, HANDLE hPrevInstance,
 	}
 
 	return result;
-} /* End WinMain() */
+}
 
 /*
 ** MainWndProc:
@@ -370,7 +370,7 @@ main_window_proc(hwnd, message, wparam, lparam)
 	} /* End switch(...) */
 
 	return NULL;
-} /* End MainWndProc() */
+}
 
 /*
 ** wputc:
@@ -455,7 +455,7 @@ wputc(unsigned char ch)
 	/* Put the window back the way it was. */
 	SelectObject(dc, oldfont);
 	ReleaseDC(hmainwnd, dc);
-} /* End wputc() */
+}
 
 /*
 ** check_abort:
@@ -476,7 +476,7 @@ check_abort(void)
 	if (aborted)
 		return 1;
 	return 0;
-} /* End check_abort() */
+}
 
 /*
 ** startup_dlg_proc:
@@ -610,7 +610,7 @@ startup_dlg_proc(HWND hdlg, unsigned message, WPARAM wparam, LPARAM lparam)
 	}
 
 	return FALSE;
-} /* End startup_dlg_proc() */
+}
 
 /*
 ** about_dlg_proc:
@@ -650,7 +650,7 @@ about_dlg_proc(HWND hdlg, unsigned message, WPARAM wparam, LPARAM lparam)
 	}
 
 	return FALSE;
-} /* End about_dlg_proc() */
+}
 
 /*
 ** show_help:
@@ -735,7 +735,7 @@ show_help(HWND hwnd, WORD type, DWORD data)
 	}
 
 	return 1;
-} /* End show_help() */
+}
 
 #endif /* WIN */
 
@@ -768,7 +768,7 @@ errpause(void)
 		DispatchMessage((LPMSG)&msg);
 	}
 #endif /* WIN */
-} /* End errpause() */
+}
 
 /*
 ** errmsg:
@@ -799,7 +799,7 @@ errmsg(msg, sval)
 		mputs("'");
 	}
 	mputs("\n");
-} /* End errmsg() */
+}
 
 /*
 ** mputs:
@@ -841,7 +841,7 @@ mputs(s)
 		wputc(*s++);
 	}
 #endif /* WIN */
-} /* End mputs() */
+}
 
 /*
 ** mchdir:
@@ -901,12 +901,11 @@ mchdir(LPSTR dname)
 		}
 	}
 
-	/* Success! */
 #ifdef WIN
 	SetErrorMode(0);
 #endif /* WIN */
 	return 1;
-} /* End mchdir() */
+}
 
 /*
 ** newtime:
@@ -978,7 +977,7 @@ newtime(str)
 	ttime = (hour << 11) | (minute << 5);
 
 	return 1;
-} /* End newtime() */
+}
 
 /*
 ** newdate:
@@ -1075,7 +1074,7 @@ newdate(str)
 	date = ((year-80) << 9) | (month << 5) | day;
 
 	return 1;
-} /* End newdate() */
+}
 
 /*
 ** touch_file:
@@ -1139,10 +1138,9 @@ touch_file(filespec, date, ttime)
 		return 0;
 	}
 
-	/* Timestamp was set OK; close file. */
 	close(handle);
 	return 1;
-} /* End touch_file() */
+}
 
 /*
 ** usage:
@@ -1160,7 +1158,7 @@ usage(void)
 	mputs(MSG_SIGNON);
 	mputs(MSG_COPYRIGHT);
 	mputs(MSG_USAGE);
-} /* End usage() */
+}
 
 /*
 ** main:
@@ -1347,10 +1345,5 @@ main(argc, argv)
 	}
 
 	return 0;
-} /* End main() */
+}
 
-/*
-====================================================================
-End touch.c
-====================================================================
-*/

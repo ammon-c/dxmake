@@ -25,14 +25,6 @@ of the author.
 #include "fnexp.h"
 #include "wild.h"
 
-/****************************** CONSTANTS *****************************/
-
-	/* NONE */
-
-/****************************** VARIABLES *****************************/
-
-	/* NONE */
-
 /****************************** FUNCTIONS *****************************/
 
 /*
@@ -93,7 +85,7 @@ w_findfirst(filespec, findbfr)
 
 	/* No match. */
 	return 1;
-} /* End w_findfirst() */
+}
 
 /*
 ** w_findnext:
@@ -147,12 +139,6 @@ w_findnext(filespec, findbfr)
 		result = _dos_findnext(findbfr);
 	}
 
-	/* No match. */
 	return 1;
-} /* End w_findnext() */
+}
 
-/*
-=========================================================================
-End wild.c
-=========================================================================
-*/

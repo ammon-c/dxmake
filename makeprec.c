@@ -47,24 +47,10 @@ file, where each line contains one filename.
 
 #include "make.h"
 
-/****************************** HEADERS *****************************/
-
-	/* See "make.h" */
-
-/****************************** CONSTANTS ***************************/
-
-	/* See "make.h" */
-
 /****************************** VARIABLES ***************************/
 
 /* precious_list:  Linked list of precious filenames. */
 static LINE *precious_list;
-
-	/* Also see "make.h" */
-
-/*************************** LOCAL FUNCTIONS ************************/
-
-	/* NONE */
 
 /****************************** FUNCTIONS ***************************/
 
@@ -84,7 +70,7 @@ void
 init_precious(void)
 {
 	precious_list = (LINE *)NULL;
-} /* End init_precious() */
+}
 
 /*
 ** flush_precious:
@@ -103,7 +89,7 @@ flush_precious(void)
 {
 	free_lines(precious_list);
 	precious_list = (LINE *)NULL;
-} /* End flush_precious() */
+}
 
 /*
 ** do_precious:
@@ -192,7 +178,7 @@ do_precious(line)
 
 	/* Success! */
 	return 1;
-} /* End do_precious() */
+}
 
 /*
 ** is_precious:
@@ -229,7 +215,7 @@ is_precious(tname)
 
 	/* Filename wasn't found in the list. */
 	return 0;
-} /* End is_precious() */
+}
 
 /*
 ** dump_precious:
@@ -261,10 +247,5 @@ dump_precious(void)
 
 		lptr = lptr->lnext;
 	}
-} /* End dump_precious() */
+}
 
-/*
-======================================================================
-End makeprec.c
-======================================================================
-*/

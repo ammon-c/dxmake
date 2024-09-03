@@ -15,13 +15,43 @@ of the author.
 =========================================================================
 */
 
-/****************************** HEADERS *******************************/
-
+/*
+** w_findfirst:
+** Finds the first matching file for the specified filespec.
+**
+** Parameters:
+**	Name		Description
+**	----		-----------
+**	filespec	Filespec to match.
+**	findbfr		Pointer to 'find_t' structure as defined
+**			in Microsoft C "dos.h" file.
+**
+** Returns:
+**	Value	Meaning
+**	-----	-------
+**	0	Match found; data returned in findbfr.
+**	1	No match.
+*/
 int	w_findfirst(char *filespec, struct find_t *findbfr);
-int	w_findnext(char *filespec, struct find_t *findbfr);
 
 /*
-=========================================================================
-End wild.h
-=========================================================================
+** w_findnext:
+** Finds the next matching file for the findbfr from a previous call
+** to w_findfirst().
+**
+** Parameters:
+**	Name		Description
+**	----		-----------
+**	filespec	Filespec to match.
+**	findbfr		Pointer to 'find_t' structure as defined
+**			in Microsoft C "dos.h" file, and processed
+**			by an initial call to w_findfirst().
+**
+** Returns:
+**	Value	Meaning
+**	-----	-------
+**	0	Match found; data returned in findbfr.
+**	1	No match.
 */
+int	w_findnext(char *filespec, struct find_t *findbfr);
+

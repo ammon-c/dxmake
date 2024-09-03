@@ -146,10 +146,9 @@ WinMain(HANDLE hInstance, HANDLE hPrevInstance,
 	LPSTR		env_ptr;
 	char		*char_ptr;
 
-	/* Save the instance handle. */
 	hinstance = hInstance;
 
-	/* Trim whitespace from command arguments. */
+	/* Trim leading whitespace from command arguments. */
 	while (*lpszCmdLine == ' ' || *lpszCmdLine == '\t')
 		lpszCmdLine++;
 
@@ -412,7 +411,7 @@ WinMain(HANDLE hInstance, HANDLE hPrevInstance,
 	}
 
 	return result;
-} /* End WinMain() */
+}
 
 /*
 ** MainWndProc:
@@ -445,10 +444,6 @@ main_window_proc(hwnd, message, wparam, lparam)
 	switch (message)
 	{
 		case WM_DESTROY:
-			/*
-			** The window is being destroyed.
-			** Post a quit message to our message dispatcher.
-			*/
 			aborted = 1;
 			PostQuitMessage(0);
 			break;
@@ -484,10 +479,10 @@ main_window_proc(hwnd, message, wparam, lparam)
 			** in, so let Windows handle it for us.
 			*/
 			return (DefWindowProc(hwnd, message, wparam, lparam));
-	} /* End switch(...) */
+	}
 
 	return NULL;
-} /* End MainWndProc() */
+}
 
 /*
 ** wputc:
@@ -572,7 +567,7 @@ wputc(unsigned char ch)
 	/* Put the window back the way it was. */
 	SelectObject(dc, oldfont);
 	ReleaseDC(hmainwnd, dc);
-} /* End wputc() */
+}
 
 /*
 ** wrun:
@@ -675,7 +670,7 @@ wrun(unsigned char *cmd)
 
 	/* Assume the command executed OK. */
 	return 0;
-} /* End wrun() */
+}
 
 /*
 ** notify_proc:
@@ -740,7 +735,7 @@ notify_proc(WORD wid, DWORD dwdata)
 
 	/* Return zero to indicate that we didn't handle the notification. */
 	return 0;
-} /* End notify_proc() */
+}
 
 /*
 ** check_abort:
@@ -761,7 +756,7 @@ check_abort(void)
 	if (aborted)
 		return 1;
 	return 0;
-} /* End check_abort() */
+}
 
 /*
 ** startup_dlg_proc:
@@ -889,7 +884,7 @@ startup_dlg_proc(HWND hdlg, unsigned message, WPARAM wparam, LPARAM lparam)
 	}
 
 	return FALSE;
-} /* End startup_dlg_proc() */
+}
 
 /*
 ** options_dlg_proc:
@@ -1083,7 +1078,7 @@ options_dlg_proc(HWND hdlg, unsigned message, WPARAM wparam, LPARAM lparam)
 	}
 
 	return FALSE;
-} /* End options_dlg_proc() */
+}
 
 /*
 ** about_dlg_proc:
@@ -1123,7 +1118,7 @@ about_dlg_proc(HWND hdlg, unsigned message, WPARAM wparam, LPARAM lparam)
 	}
 
 	return FALSE;
-} /* End about_dlg_proc() */
+}
 
 /*
 ** show_help:
@@ -1208,10 +1203,5 @@ show_help(HWND hwnd, WORD type, DWORD data)
 	}
 
 	return 1;
-} /* End show_help() */
+}
 
-/*
-======================================================================
-End makew.c
-======================================================================
-*/

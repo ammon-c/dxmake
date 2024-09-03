@@ -14,11 +14,17 @@ of the author.
 =================================================================
 */
 
-/* Prototype: */
+/*
+** getpath:
+** Deletes the filename and extension from a filespec.
+**
+** Parameters:
+**	Value		Meaning
+**	-----		-------
+**	filespec	Filespec to be modified.
+**
+** Returns:
+**	NONE
+*/
 void getpath(char *filespec);
 
-/*
-=================================================================
-End getpath.h
-=================================================================
-*/
