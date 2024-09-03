@@ -17,12 +17,12 @@ of the author.
 ** backslash ('\').
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	str	String to be converted.
+**      Name    Description
+**      ----    -----------
+**      str     String to be converted.
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void cvt_slash(char *str);
 

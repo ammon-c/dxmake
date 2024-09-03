@@ -42,10 +42,10 @@ elsewhere.
 
 /* Prototypes of functions local to this module: */
 #ifdef BT_TARGETS
-void	free_target_tree(TARGET *t);
+void    free_target_tree(TARGET *t);
 #endif /* BT_TARGETS */
-static TARGET	*dup_target(TARGET *tar, char *tname);
-static int	add_target(TARGET *tar);
+static TARGET   *dup_target(TARGET *tar, char *tname);
+static int      add_target(TARGET *tar);
 
 /****************************** VARIABLES ***************************/
 
@@ -60,34 +60,34 @@ static TARGET *target_list;
 ** Frees a binary tree of target nodes.
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	t	Pointer to tree to be freed.
+**      Name    Description
+**      ----    -----------
+**      t       Pointer to tree to be freed.
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 free_target_tree(t)
-	TARGET	*t;
+        TARGET  *t;
 {
-	/* Check if this is the end of a branch. */
-	if (t == (TARGET *)NULL)
-		return;
+        /* Check if this is the end of a branch. */
+        if (t == (TARGET *)NULL)
+                return;
 
-	/* Free children first. */
-	free_target_tree(t->tleft);
-	free_target_tree(t->tright);
+        /* Free children first. */
+        free_target_tree(t->tleft);
+        free_target_tree(t->tright);
 
-	/* Free strings. */
-	mem_free(t->tname);
-	if (t->tdependents != (char *)NULL)
-		mem_free(t->tdependents);
-	if (t->tcommands != (LINE *)NULL)
-		free_lines(t->tcommands);
+        /* Free strings. */
+        mem_free(t->tname);
+        if (t->tdependents != (char *)NULL)
+                mem_free(t->tdependents);
+        if (t->tcommands != (LINE *)NULL)
+                free_lines(t->tcommands);
 
-	/* Free the target descriptor structure. */
-	mem_free(t);
+        /* Free the target descriptor structure. */
+        mem_free(t);
 }
 #endif /* BT_TARGETS */
 
@@ -96,99 +96,99 @@ free_target_tree(t)
 ** Adds a target descriptor to the targets list.
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	tar	Pointer to target descriptor to be added.
+**      Name    Description
+**      ----    -----------
+**      tar     Pointer to target descriptor to be added.
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	1	Successful.
-**	0	Error occurred (i.e. duplicate target name).
+**      Value   Meaning
+**      -----   -------
+**      1       Successful.
+**      0       Error occurred (i.e. duplicate target name).
 */
 int
 add_target(tar)
-	TARGET	*tar;
+        TARGET  *tar;
 {
-	TARGET	*tptr;
-	int	comparison;
+        TARGET  *tptr;
+        int     comparison;
 
-	if (target_list == (TARGET *)NULL)
-	{
-		/* This is the first entry in the targets list. */
-		target_list = tar;
+        if (target_list == (TARGET *)NULL)
+        {
+                /* This is the first entry in the targets list. */
+                target_list = tar;
 #ifdef BT_TARGETS
-		target_list->tleft = (TARGET *)NULL;
-		target_list->tright = (TARGET *)NULL;
+                target_list->tleft = (TARGET *)NULL;
+                target_list->tright = (TARGET *)NULL;
 #else
-		target_list->tnext = (TARGET *)NULL;
+                target_list->tnext = (TARGET *)NULL;
 #endif /* BT_TARGETS */
-	}
-	else
-	{
+        }
+        else
+        {
 #ifdef BT_TARGETS
-		/*
-		** This is not the first entry; find the appropriate
-		** leaf on the tree to add the new entry.
-		*/
-		tptr = target_list;
-		while (1)
-		{
-			comparison = strcmp(tar->tname, tptr->tname);
-			if (comparison == 0)
-			{
-				/* Same target is already defined. */
-				errmsg(MSG_ERR_SAMETARGET, tar->tname, NOVAL);
-				return 0;
-			}
-			else if (comparison < 0)
-			{
-				/* Check if left branch is empty. */
-				if (tptr->tleft == (TARGET *)NULL)
-				{
-					tptr->tleft = tar;
-					tptr->tleft->tleft = (TARGET *)NULL;
-					tptr->tleft->tright = (TARGET *)NULL;
-					break;
-				}
+                /*
+                ** This is not the first entry; find the appropriate
+                ** leaf on the tree to add the new entry.
+                */
+                tptr = target_list;
+                while (1)
+                {
+                        comparison = strcmp(tar->tname, tptr->tname);
+                        if (comparison == 0)
+                        {
+                                /* Same target is already defined. */
+                                errmsg(MSG_ERR_SAMETARGET, tar->tname, NOVAL);
+                                return 0;
+                        }
+                        else if (comparison < 0)
+                        {
+                                /* Check if left branch is empty. */
+                                if (tptr->tleft == (TARGET *)NULL)
+                                {
+                                        tptr->tleft = tar;
+                                        tptr->tleft->tleft = (TARGET *)NULL;
+                                        tptr->tleft->tright = (TARGET *)NULL;
+                                        break;
+                                }
 
-				/* Move down left side of tree. */
-				tptr = tptr->tleft;
-			}
-			else /* comparison > 0 */
-			{
-				/* Check if right branch is empty. */
-				if (tptr->tright == (TARGET *)NULL)
-				{
-					tptr->tright = tar;
-					tptr->tright->tleft = (TARGET *)NULL;
-					tptr->tright->tright = (TARGET *)NULL;
-					break;
-				}
+                                /* Move down left side of tree. */
+                                tptr = tptr->tleft;
+                        }
+                        else /* comparison > 0 */
+                        {
+                                /* Check if right branch is empty. */
+                                if (tptr->tright == (TARGET *)NULL)
+                                {
+                                        tptr->tright = tar;
+                                        tptr->tright->tleft = (TARGET *)NULL;
+                                        tptr->tright->tright = (TARGET *)NULL;
+                                        break;
+                                }
 
-				/* Move down right side of tree. */
-				tptr = tptr->tright;
-			}
-		}
+                                /* Move down right side of tree. */
+                                tptr = tptr->tright;
+                        }
+                }
 #else
-		/* This is not the first entry; insert at the end. */
-		tptr = target_list;
-		while (tptr->tnext != (TARGET *)NULL)
-		{
-			if (strcmp(tptr->tname, tar->tname) == 0)
-			{
-				/* Same target is already defined. */
-				errmsg(MSG_ERR_SAMETARGET, tar->tname, NOVAL);
-				return 0;
-			}
-			tptr = tptr->tnext;
-		}
-		tptr->tnext = tar;
-		tptr->tnext->tnext = (TARGET *)NULL;
+                /* This is not the first entry; insert at the end. */
+                tptr = target_list;
+                while (tptr->tnext != (TARGET *)NULL)
+                {
+                        if (strcmp(tptr->tname, tar->tname) == 0)
+                        {
+                                /* Same target is already defined. */
+                                errmsg(MSG_ERR_SAMETARGET, tar->tname, NOVAL);
+                                return 0;
+                        }
+                        tptr = tptr->tnext;
+                }
+                tptr->tnext = tar;
+                tptr->tnext->tnext = (TARGET *)NULL;
 #endif /* BT_TARGETS */
-	}
+        }
 
-	return 1;
+        return 1;
 }
 
 /*
@@ -197,87 +197,87 @@ add_target(tar)
 ** but with a different target name.
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	tar	Pointer to target descriptor to duplicate.
-**	tname	Name to use for new target descriptor.
+**      Name    Description
+**      ----    -----------
+**      tar     Pointer to target descriptor to duplicate.
+**      tname   Name to use for new target descriptor.
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	NULL	Error occurred.
-**	other	Pointer to new target descriptor.
+**      Value   Meaning
+**      -----   -------
+**      NULL    Error occurred.
+**      other   Pointer to new target descriptor.
 */
 static TARGET *
 dup_target(tar, tname)
-	TARGET	*tar;
-	char	*tname;
+        TARGET  *tar;
+        char    *tname;
 {
-	TARGET	*newtar;
+        TARGET  *newtar;
 
-	/* Allocate memory for target descriptor. */
-	newtar = (TARGET *)mem_alloc(sizeof(TARGET));
-	if (newtar == (TARGET *)NULL)
-	{
-		/* Out of memory for target definition. */
-		errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-		return (TARGET *)NULL;
-	}
+        /* Allocate memory for target descriptor. */
+        newtar = (TARGET *)mem_alloc(sizeof(TARGET));
+        if (newtar == (TARGET *)NULL)
+        {
+                /* Out of memory for target definition. */
+                errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                return (TARGET *)NULL;
+        }
 #ifdef BT_TARGETS
-	newtar->tleft = (TARGET *)NULL;
-	newtar->tright = (TARGET *)NULL;
+        newtar->tleft = (TARGET *)NULL;
+        newtar->tright = (TARGET *)NULL;
 #else
-	newtar->tnext = (TARGET *)NULL;
+        newtar->tnext = (TARGET *)NULL;
 #endif /* BT_TARGETS */
-	newtar->tdependents = (char *)NULL;
-	newtar->tcommands = (LINE *)NULL;
+        newtar->tdependents = (char *)NULL;
+        newtar->tcommands = (LINE *)NULL;
 
-	/* Allocate memory for target name. */
-	newtar->tname = (char *)mem_alloc(strlen(tname) + 1);
-	if (newtar->tname == (char *)NULL)
-	{
-		/* Out of memory for target name. */
-		errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-		mem_free(newtar);
-		return (TARGET *)NULL;
-	}
+        /* Allocate memory for target name. */
+        newtar->tname = (char *)mem_alloc(strlen(tname) + 1);
+        if (newtar->tname == (char *)NULL)
+        {
+                /* Out of memory for target name. */
+                errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                mem_free(newtar);
+                return (TARGET *)NULL;
+        }
 
-	/* Save target name in descriptor. */
-	strcpy(newtar->tname, tname);
+        /* Save target name in descriptor. */
+        strcpy(newtar->tname, tname);
 
-	/* Copy dependents info. */
-	/* Allocate memory for dependent line (if any). */
-	if (tar->tdependents != (char *)NULL)
-	{
-		newtar->tdependents =
-			mem_alloc(strlen(tar->tdependents) + 1);
-		if (newtar->tdependents == (char *)NULL)
-		{
-			/* Out of memory for dependent list. */
-			errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-			mem_free(newtar->tname);
-			mem_free(newtar);
-			return (TARGET *)NULL;
-		}
-		strcpy(newtar->tdependents, tar->tdependents);
-	}
+        /* Copy dependents info. */
+        /* Allocate memory for dependent line (if any). */
+        if (tar->tdependents != (char *)NULL)
+        {
+                newtar->tdependents =
+                        mem_alloc(strlen(tar->tdependents) + 1);
+                if (newtar->tdependents == (char *)NULL)
+                {
+                        /* Out of memory for dependent list. */
+                        errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                        mem_free(newtar->tname);
+                        mem_free(newtar);
+                        return (TARGET *)NULL;
+                }
+                strcpy(newtar->tdependents, tar->tdependents);
+        }
 
-	/* Copy command info. */
-	if (tar->tcommands != (LINE *)NULL)
-	{
-		newtar->tcommands = dup_lines(tar->tcommands);
-		if (newtar->tcommands == (LINE *)NULL)
-		{
-			/* Out of memory for dependent list. */
-			errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-			mem_free(newtar->tname);
-			mem_free(newtar->tdependents);
-			mem_free(newtar);
-			return (TARGET *)NULL;
-		}
-	}
+        /* Copy command info. */
+        if (tar->tcommands != (LINE *)NULL)
+        {
+                newtar->tcommands = dup_lines(tar->tcommands);
+                if (newtar->tcommands == (LINE *)NULL)
+                {
+                        /* Out of memory for dependent list. */
+                        errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                        mem_free(newtar->tname);
+                        mem_free(newtar->tdependents);
+                        mem_free(newtar);
+                        return (TARGET *)NULL;
+                }
+        }
 
-	return newtar;
+        return newtar;
 }
 
 /****************************** FUNCTIONS ***************************/
@@ -289,15 +289,15 @@ dup_target(tar, tname)
 ** this module.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 init_targets(void)
 {
-	target_list = (TARGET *)NULL;
+        target_list = (TARGET *)NULL;
 }
 
 /*
@@ -305,22 +305,22 @@ init_targets(void)
 ** Returns the filename of the default target file.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	NULL	There are no targets defined.
-**	other	Pointer to character string
-**		containing target filename.
+**      Value   Meaning
+**      -----   -------
+**      NULL    There are no targets defined.
+**      other   Pointer to character string
+**              containing target filename.
 */
 char *
 default_target(void)
 {
-	if (target_list == (TARGET *)NULL)
-		return (char *)NULL;
+        if (target_list == (TARGET *)NULL)
+                return (char *)NULL;
 
-	return target_list->tname;
+        return target_list->tname;
 }
 
 /*
@@ -328,60 +328,60 @@ default_target(void)
 ** Finds the target descriptor for a particular target.
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	tname	Name of target to find.
+**      Name    Description
+**      ----    -----------
+**      tname   Name of target to find.
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	NULL	Specified target not found.
-**	other	Pointer to target descriptor.
+**      Value   Meaning
+**      -----   -------
+**      NULL    Specified target not found.
+**      other   Pointer to target descriptor.
 */
 TARGET *
 find_target(tname)
-	char	*tname;
+        char    *tname;
 {
-	TARGET	*tar;		/* Pointer to target's descriptor. */
-	int	comparison;	/* Result of target name comparison. */
+        TARGET  *tar;           /* Pointer to target's descriptor. */
+        int     comparison;     /* Result of target name comparison. */
 
-	/* Find target descriptor for specified target (if any). */
-	tar = target_list;
+        /* Find target descriptor for specified target (if any). */
+        tar = target_list;
 #ifdef BT_TARGETS
-	while (tar != (TARGET *)NULL)
-	{
-		comparison = strcmp(tname, tar->tname);
-		if (comparison == 0)
-		{
-			/* Found it. */
-			return tar;
-		}
-		else if (comparison < 0)
-		{
-			/* Move down left side of tree. */
-			tar = tar->tleft;
-		}
-		else /* comparison > 0 */
-		{
-			/* Move down right side of tree. */
-			tar = tar->tright;
-		}
-	}
+        while (tar != (TARGET *)NULL)
+        {
+                comparison = strcmp(tname, tar->tname);
+                if (comparison == 0)
+                {
+                        /* Found it. */
+                        return tar;
+                }
+                else if (comparison < 0)
+                {
+                        /* Move down left side of tree. */
+                        tar = tar->tleft;
+                }
+                else /* comparison > 0 */
+                {
+                        /* Move down right side of tree. */
+                        tar = tar->tright;
+                }
+        }
 #else
-	while (tar != (TARGET *)NULL)
-	{
-		/* Is this descriptor for the target we want? */
-		if (strcmp(tname, tar->tname) == 0)
-		{
-			/* Found the right descriptor. */
-			return tar;
-		}
+        while (tar != (TARGET *)NULL)
+        {
+                /* Is this descriptor for the target we want? */
+                if (strcmp(tname, tar->tname) == 0)
+                {
+                        /* Found the right descriptor. */
+                        return tar;
+                }
 
-		tar = tar->tnext;
-	}
+                tar = tar->tnext;
+        }
 #endif /* BT_TARGETS */
 
-	return (TARGET *)NULL;
+        return (TARGET *)NULL;
 }
 
 /*
@@ -389,43 +389,43 @@ find_target(tname)
 ** Empties and frees the target list.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 flush_targets(void)
 {
 #ifdef BT_TARGETS
-	free_target_tree(target_list);
+        free_target_tree(target_list);
 #else
-	TARGET	*t;	/* Temporary target descriptor pointers. */
-	TARGET	*t2;
+        TARGET  *t;     /* Temporary target descriptor pointers. */
+        TARGET  *t2;
 
-	/* Free each entry in the target list. */
-	t = target_list;
-	while (t != (TARGET *)NULL)
-	{
-		/* Free target name. */
-		mem_free(t->tname);
+        /* Free each entry in the target list. */
+        t = target_list;
+        while (t != (TARGET *)NULL)
+        {
+                /* Free target name. */
+                mem_free(t->tname);
 
-		/* Free target dependent files. */
-		if (t->tdependents != (char *)NULL)
-			mem_free(t->tdependents);
+                /* Free target dependent files. */
+                if (t->tdependents != (char *)NULL)
+                        mem_free(t->tdependents);
 
-		/* Free target command lines. */
-		if (t->tcommands != (LINE *)NULL)
-			free_lines(t->tcommands);
+                /* Free target command lines. */
+                if (t->tcommands != (LINE *)NULL)
+                        free_lines(t->tcommands);
 
-		/* Free target descriptor. */
-		t2 = t->tnext;
-		mem_free(t);
-		t = t2;
-	}
+                /* Free target descriptor. */
+                t2 = t->tnext;
+                mem_free(t);
+                t = t2;
+        }
 #endif
 
-	target_list = (TARGET *)NULL;
+        target_list = (TARGET *)NULL;
 }
 
 /*
@@ -434,265 +434,265 @@ flush_targets(void)
 ** target description information to the internal target list.
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	line	First line of target definition.
-**	handle	File handle to read if target definition is more
-**		than one line long.
+**      Name    Description
+**      ----    -----------
+**      line    First line of target definition.
+**      handle  File handle to read if target definition is more
+**              than one line long.
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	1	Successful.
-**	0	Error occurred (syntax error, out of memory, I/O error, etc).
+**      Value   Meaning
+**      -----   -------
+**      1       Successful.
+**      0       Error occurred (syntax error, out of memory, I/O error, etc).
 */
 int
 define_target(line, handle)
-	char	*line;
-	int	handle;
+        char    *line;
+        int     handle;
 {
-	int	pos;
-	int	tpos;
-	char	tname[MAXPATH];	/* Name of target. */
-	TARGET	*tar;		/* Temporary target descriptor pointer. */
-	TARGET	*tar2;		/* Temporary target descriptor pointer. */
-	LINE	*nptr;		/* Temporary line descriptor pointer. */
-	int	didcmds = 0;	/* Flag, nonzero after first command read. */
-	LINE	*names;		/* Temporary list of target names. */
-	int	result;		/* Result of last read. */
+        int     pos;
+        int     tpos;
+        char    tname[MAXPATH]; /* Name of target. */
+        TARGET  *tar;           /* Temporary target descriptor pointer. */
+        TARGET  *tar2;          /* Temporary target descriptor pointer. */
+        LINE    *nptr;          /* Temporary line descriptor pointer. */
+        int     didcmds = 0;    /* Flag, nonzero after first command read. */
+        LINE    *names;         /* Temporary list of target names. */
+        int     result;         /* Result of last read. */
 
-	/* Get target name(s) from input line. */
-	names = (LINE *)NULL;
-	pos = 0;
-	while (line[pos] != '\0' &&
-		!(line[pos] == ':' && line[pos + 1] != '\\'))
-	{
-		/* Get next target name from line. */
-		tpos = 0;
-		while (line[pos] != '\0' &&
-			line[pos] != ' ' &&
-			line[pos] != '\t' &&
-			!(line[pos] == ':' && line[pos + 1] != '\\'))
-		{
-			/* Check for overflow. */
-			if (pos >= MAXPATH)
-			{
-				/* Target name too long. */
-				errmsg(MSG_ERR_PATHTOOLONG, line, NOVAL);
-				return 0;
-			}
+        /* Get target name(s) from input line. */
+        names = (LINE *)NULL;
+        pos = 0;
+        while (line[pos] != '\0' &&
+                !(line[pos] == ':' && line[pos + 1] != '\\'))
+        {
+                /* Get next target name from line. */
+                tpos = 0;
+                while (line[pos] != '\0' &&
+                        line[pos] != ' ' &&
+                        line[pos] != '\t' &&
+                        !(line[pos] == ':' && line[pos + 1] != '\\'))
+                {
+                        /* Check for overflow. */
+                        if (pos >= MAXPATH)
+                        {
+                                /* Target name too long. */
+                                errmsg(MSG_ERR_PATHTOOLONG, line, NOVAL);
+                                return 0;
+                        }
 
-			/* Copy character for target name. */
-			tname[tpos++] = line[pos++];
-		}
-		tname[tpos] = '\0';
+                        /* Copy character for target name. */
+                        tname[tpos++] = line[pos++];
+                }
+                tname[tpos] = '\0';
 
-		/* Add target name to temporary list of target names. */
-		nptr = append_line(names, tname);
-		if (nptr == (LINE *)NULL)
-		{
-			/* Out of memory for dependent list. */
-			errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-			free_lines(names);
-			return 0;
-		}
-		names = nptr;
+                /* Add target name to temporary list of target names. */
+                nptr = append_line(names, tname);
+                if (nptr == (LINE *)NULL)
+                {
+                        /* Out of memory for dependent list. */
+                        errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                        free_lines(names);
+                        return 0;
+                }
+                names = nptr;
 
-		/* Skip any whitespace after target name. */
-		while (line[pos] == ' ' ||
-			line[pos] == '\t')
-			pos++;
-	}
+                /* Skip any whitespace after target name. */
+                while (line[pos] == ' ' ||
+                        line[pos] == '\t')
+                        pos++;
+        }
 
-	/* Make sure at least one target name was given. */
-	if (names == (LINE *)NULL)
-	{
-		/* No targets given; syntax error. */
-		errmsg(MSG_ERR_TARGETSYNTAX, line, NOVAL);
-		return 0;
-	}
+        /* Make sure at least one target name was given. */
+        if (names == (LINE *)NULL)
+        {
+                /* No targets given; syntax error. */
+                errmsg(MSG_ERR_TARGETSYNTAX, line, NOVAL);
+                return 0;
+        }
 
-	/* Check for ':'. */
-	if (line[pos] != ':')
-	{
-		/* Syntax error in target definition. */
-		errmsg(MSG_ERR_TARGETSYNTAX, line, NOVAL);
-		free_lines(names);
-		return 0;
-	}
+        /* Check for ':'. */
+        if (line[pos] != ':')
+        {
+                /* Syntax error in target definition. */
+                errmsg(MSG_ERR_TARGETSYNTAX, line, NOVAL);
+                free_lines(names);
+                return 0;
+        }
 
-	/* Skip ':'. */
-	pos++;
+        /* Skip ':'. */
+        pos++;
 
-	/* Skip any whitespace between ':' and dependents list. */
-	while (line[pos] == ' ' ||
-		line[pos] == '\t')
-		pos++;
+        /* Skip any whitespace between ':' and dependents list. */
+        while (line[pos] == ' ' ||
+                line[pos] == '\t')
+                pos++;
 
-	/*
-	** Build new target descriptor.
-	*/
+        /*
+        ** Build new target descriptor.
+        */
 
-	/* Allocate memory for target descriptor. */
-	tar = (TARGET *)mem_alloc(sizeof(TARGET));
-	if (tar == (TARGET *)NULL)
-	{
-		/* Out of memory for target definition. */
-		errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-		free_lines(names);
-		return 0;
-	}
+        /* Allocate memory for target descriptor. */
+        tar = (TARGET *)mem_alloc(sizeof(TARGET));
+        if (tar == (TARGET *)NULL)
+        {
+                /* Out of memory for target definition. */
+                errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                free_lines(names);
+                return 0;
+        }
 #ifdef BT_TARGETS
-	tar->tleft = (TARGET *)NULL;
-	tar->tright = (TARGET *)NULL;
+        tar->tleft = (TARGET *)NULL;
+        tar->tright = (TARGET *)NULL;
 #else
-	tar->tnext = (TARGET *)NULL;
+        tar->tnext = (TARGET *)NULL;
 #endif /* BT_TARGETS */
-	tar->tdependents = (char *)NULL;
-	tar->tcommands = (LINE *)NULL;
+        tar->tdependents = (char *)NULL;
+        tar->tcommands = (LINE *)NULL;
 
-	/* Allocate memory for target name. */
-	tar->tname = (char *)mem_alloc(strlen(names->ldata) + 1);
-	if (tar->tname == (char *)NULL)
-	{
-		/* Out of memory for target name. */
-		errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-		mem_free(tar);
-		free_lines(names);
-		return 0;
-	}
+        /* Allocate memory for target name. */
+        tar->tname = (char *)mem_alloc(strlen(names->ldata) + 1);
+        if (tar->tname == (char *)NULL)
+        {
+                /* Out of memory for target name. */
+                errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                mem_free(tar);
+                free_lines(names);
+                return 0;
+        }
 
-	/* Save target name in descriptor. */
-	strcpy(tar->tname, names->ldata);
+        /* Save target name in descriptor. */
+        strcpy(tar->tname, names->ldata);
 
-	/* Allocate memory for dependent line (if any). */
-	if (line[pos] != '\0')
-	{
-		tar->tdependents = (char *)mem_alloc(strlen(&line[pos]) + 1);
-		if (tar->tdependents == (char *)NULL)
-		{
-			/* Out of memory for dependent list. */
-			errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-			mem_free(tar->tname);
-			mem_free(tar);
-			free_lines(names);
-			return 0;
-		}
-		strcpy(tar->tdependents, &line[pos]);
-	}
+        /* Allocate memory for dependent line (if any). */
+        if (line[pos] != '\0')
+        {
+                tar->tdependents = (char *)mem_alloc(strlen(&line[pos]) + 1);
+                if (tar->tdependents == (char *)NULL)
+                {
+                        /* Out of memory for dependent list. */
+                        errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                        mem_free(tar->tname);
+                        mem_free(tar);
+                        free_lines(names);
+                        return 0;
+                }
+                strcpy(tar->tdependents, &line[pos]);
+        }
 
-	/* Add new target descriptor to target list. */
-	if (!add_target(tar))
-	{
-		/* Error adding target to list. */
-		return 0;
-	}
+        /* Add new target descriptor to target list. */
+        if (!add_target(tar))
+        {
+                /* Error adding target to list. */
+                return 0;
+        }
 
-	/*
-	** Build target's command list.
-	*/
-	while (1)
-	{
-		result = read_logical_line(handle, inpline, MAXLLINE);
-		if (result == -1)
-		{
-			/* Fatal read error. */
-			return 0;
-		}
-		if (result < 1)
-		{
-			if (didcmds)
-			{
-				/*
-				** End of makefile after commands.
-				** This is not an error.  Make used
-				** to barf if there weren't at least
-				** two lines after the commands.
-				** This is the hack to fix it.
-				*/
-				break;
-			}
+        /*
+        ** Build target's command list.
+        */
+        while (1)
+        {
+                result = read_logical_line(handle, inpline, MAXLLINE);
+                if (result == -1)
+                {
+                        /* Fatal read error. */
+                        return 0;
+                }
+                if (result < 1)
+                {
+                        if (didcmds)
+                        {
+                                /*
+                                ** End of makefile after commands.
+                                ** This is not an error.  Make used
+                                ** to barf if there weren't at least
+                                ** two lines after the commands.
+                                ** This is the hack to fix it.
+                                */
+                                break;
+                        }
 
-			/* Unexpected end-of-file. */
-			errmsg(MSG_ERR_EOF, (char *)NULL, NOVAL);
-			free_lines(names);
-			return 0;
-		}
+                        /* Unexpected end-of-file. */
+                        errmsg(MSG_ERR_EOF, (char *)NULL, NOVAL);
+                        free_lines(names);
+                        return 0;
+                }
 
-		if (inpline[0] == '#')
-		{
-			/*
-			** The input line contains a comment, so go back
-			** and try again.
-			*/
-			continue;
-		}
+                if (inpline[0] == '#')
+                {
+                        /*
+                        ** The input line contains a comment, so go back
+                        ** and try again.
+                        */
+                        continue;
+                }
 
-		didcmds = 1;
+                didcmds = 1;
 
-		/*
-		** Check for end of target's commands.  A line that
-		** is not indented is not part of the target's commands.
-		*/
-		if (inpline[0] != ' ' && inpline[0] != '\t')
-		{
-			/* End of target commands definition. */
-			unread_logical_line(inpline);
-			break;
-		}
+                /*
+                ** Check for end of target's commands.  A line that
+                ** is not indented is not part of the target's commands.
+                */
+                if (inpline[0] != ' ' && inpline[0] != '\t')
+                {
+                        /* End of target commands definition. */
+                        unread_logical_line(inpline);
+                        break;
+                }
 
-		/* Find first non-whitespace character. */
-		pos = 0;
-		while (inpline[pos] == ' ' || inpline[pos] == '\t')
-			pos++;
+                /* Find first non-whitespace character. */
+                pos = 0;
+                while (inpline[pos] == ' ' || inpline[pos] == '\t')
+                        pos++;
 
-		/* Add line to target commands. */
-		nptr = append_line(tar->tcommands, &inpline[pos]);
-		if (nptr == (LINE *)NULL)
-		{
-			/* Out of memory for target commands. */
-			errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-			free_lines(names);
-			free_lines(tar->tcommands);
-			return 0;
-		}
-		tar->tcommands = nptr;
-	} /* End while(1) */
+                /* Add line to target commands. */
+                nptr = append_line(tar->tcommands, &inpline[pos]);
+                if (nptr == (LINE *)NULL)
+                {
+                        /* Out of memory for target commands. */
+                        errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                        free_lines(names);
+                        free_lines(tar->tcommands);
+                        return 0;
+                }
+                tar->tcommands = nptr;
+        } /* End while(1) */
 
-	/*
-	** Duplicate target description for each target that was named
-	** on this line.
-	*/
-	nptr = names->lnext;
-	while (nptr != (LINE *)NULL)
-	{
-		/* Duplicate descriptor info. */
-		tar2 = dup_target(tar, nptr->ldata);
-		if (tar2 == (TARGET *)NULL)
-		{
-			/* Error duplicating target. */
-			free_lines(names);
-			return 0;
-		}
+        /*
+        ** Duplicate target description for each target that was named
+        ** on this line.
+        */
+        nptr = names->lnext;
+        while (nptr != (LINE *)NULL)
+        {
+                /* Duplicate descriptor info. */
+                tar2 = dup_target(tar, nptr->ldata);
+                if (tar2 == (TARGET *)NULL)
+                {
+                        /* Error duplicating target. */
+                        free_lines(names);
+                        return 0;
+                }
 
-		/* Add new target descriptor to target list. */
-		if (!add_target(tar2))
-		{
-			/* Error adding target to list. */
-			mem_free(tar2->tname);
-			mem_free(tar2->tdependents);
-			free_lines(tar2->tcommands);
-			mem_free(tar2);
-			free_lines(names);
-			return 0;
-		}
+                /* Add new target descriptor to target list. */
+                if (!add_target(tar2))
+                {
+                        /* Error adding target to list. */
+                        mem_free(tar2->tname);
+                        mem_free(tar2->tdependents);
+                        free_lines(tar2->tcommands);
+                        mem_free(tar2);
+                        free_lines(names);
+                        return 0;
+                }
 
-		/* Step to next name in list. */
-		nptr = nptr->lnext;
-	}
+                /* Step to next name in list. */
+                nptr = nptr->lnext;
+        }
 
-	free_lines(names);
-	return 1;
+        free_lines(names);
+        return 1;
 }
 
 /*
@@ -701,49 +701,49 @@ define_target(line, handle)
 ** debugging.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 dump_targets(void)
 {
-	LINE	*lptr;	/* Temporary line pointer. */
-	TARGET	*tptr;	/* Temporary target pointer. */
+        LINE    *lptr;  /* Temporary line pointer. */
+        TARGET  *tptr;  /* Temporary target pointer. */
 
 #ifdef BT_TARGETS
-	mputs("********** TARGET DUMP NOT IMPLEMENTED *********\n");
+        mputs("********** TARGET DUMP NOT IMPLEMENTED *********\n");
 #else
-	tptr = target_list;
-	if (tptr == (TARGET *)NULL)
-		mputs(MSG_INFO_NOTARGETS);
-	while (tptr != (TARGET *)NULL)
-	{
-		mputs(MSG_INFO_TARGETNAME);
-		mputs(tptr->tname);
-		mputs("\n");
-		if (tptr->tdependents != (char *)NULL)
-		{
-			mputs(MSG_INFO_TDEPHDR);
-			mputs(MSG_INFO_TDEPNAME);
-			mputs(tptr->tdependents);
-			mputs("\n");
-		}
-		lptr = tptr->tcommands;
-		if (lptr != (LINE *)NULL)
-			mputs(MSG_INFO_TCMDHDR);
-		while (lptr != (LINE *)NULL)
-		{
-			mputs(MSG_INFO_TCMDNAME);
-			mputs(lptr->ldata);
-			mputs("\n");
+        tptr = target_list;
+        if (tptr == (TARGET *)NULL)
+                mputs(MSG_INFO_NOTARGETS);
+        while (tptr != (TARGET *)NULL)
+        {
+                mputs(MSG_INFO_TARGETNAME);
+                mputs(tptr->tname);
+                mputs("\n");
+                if (tptr->tdependents != (char *)NULL)
+                {
+                        mputs(MSG_INFO_TDEPHDR);
+                        mputs(MSG_INFO_TDEPNAME);
+                        mputs(tptr->tdependents);
+                        mputs("\n");
+                }
+                lptr = tptr->tcommands;
+                if (lptr != (LINE *)NULL)
+                        mputs(MSG_INFO_TCMDHDR);
+                while (lptr != (LINE *)NULL)
+                {
+                        mputs(MSG_INFO_TCMDNAME);
+                        mputs(lptr->ldata);
+                        mputs("\n");
 
-			lptr = lptr->lnext;
-		}
+                        lptr = lptr->lnext;
+                }
 
-		tptr = tptr->tnext;
-	}
+                tptr = tptr->tnext;
+        }
 #endif /* BT_TARGETS */
 }
 

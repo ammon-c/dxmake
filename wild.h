@@ -20,19 +20,19 @@ of the author.
 ** Finds the first matching file for the specified filespec.
 **
 ** Parameters:
-**	Name		Description
-**	----		-----------
-**	filespec	Filespec to match.
-**	findbfr		Pointer to 'find_t' structure as defined
-**			in Microsoft C "dos.h" file.
+**      Name            Description
+**      ----            -----------
+**      filespec        Filespec to match.
+**      findbfr         Pointer to 'find_t' structure as defined
+**                      in Microsoft C "dos.h" file.
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	0	Match found; data returned in findbfr.
-**	1	No match.
+**      Value   Meaning
+**      -----   -------
+**      0       Match found; data returned in findbfr.
+**      1       No match.
 */
-int	w_findfirst(char *filespec, struct find_t *findbfr);
+int     w_findfirst(char *filespec, struct find_t *findbfr);
 
 /*
 ** w_findnext:
@@ -40,18 +40,18 @@ int	w_findfirst(char *filespec, struct find_t *findbfr);
 ** to w_findfirst().
 **
 ** Parameters:
-**	Name		Description
-**	----		-----------
-**	filespec	Filespec to match.
-**	findbfr		Pointer to 'find_t' structure as defined
-**			in Microsoft C "dos.h" file, and processed
-**			by an initial call to w_findfirst().
+**      Name            Description
+**      ----            -----------
+**      filespec        Filespec to match.
+**      findbfr         Pointer to 'find_t' structure as defined
+**                      in Microsoft C "dos.h" file, and processed
+**                      by an initial call to w_findfirst().
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	0	Match found; data returned in findbfr.
-**	1	No match.
+**      Value   Meaning
+**      -----   -------
+**      0       Match found; data returned in findbfr.
+**      1       No match.
 */
-int	w_findnext(char *filespec, struct find_t *findbfr);
+int     w_findnext(char *filespec, struct find_t *findbfr);
 

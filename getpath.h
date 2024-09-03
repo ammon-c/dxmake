@@ -19,12 +19,12 @@ of the author.
 ** Deletes the filename and extension from a filespec.
 **
 ** Parameters:
-**	Value		Meaning
-**	-----		-------
-**	filespec	Filespec to be modified.
+**      Value           Meaning
+**      -----           -------
+**      filespec        Filespec to be modified.
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void getpath(char *filespec);
 

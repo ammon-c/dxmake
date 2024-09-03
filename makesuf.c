@@ -65,15 +65,15 @@ static LINE *suffixes_list;
 ** the suffixes list.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 init_suffixes(void)
 {
-	suffixes_list = (LINE *)NULL;
+        suffixes_list = (LINE *)NULL;
 }
 
 /*
@@ -85,16 +85,16 @@ init_suffixes(void)
 ** list in the makefile.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 flush_suffixes(void)
 {
-	free_lines(suffixes_list);
-	suffixes_list = (LINE *)NULL;
+        free_lines(suffixes_list);
+        suffixes_list = (LINE *)NULL;
 }
 
 /*
@@ -105,99 +105,99 @@ flush_suffixes(void)
 ** suffixes list will be flushed.
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	line	Line from makefile containing ".SUFFIXES"
-**		statement to parse.
+**      Name    Description
+**      ----    -----------
+**      line    Line from makefile containing ".SUFFIXES"
+**              statement to parse.
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	1	Successful.
-**	0	Error occurred.
+**      Value   Meaning
+**      -----   -------
+**      1       Successful.
+**      0       Error occurred.
 */
 int
 do_suffixes(line)
-	char	*line;
+        char    *line;
 {
-	int	i = 0;
-	int	j;
-	int	num_suffixes;
-	char	suffix[MAX_SUFFIX_STR + 2];
-	LINE	*tmp;
+        int     i = 0;
+        int     j;
+        int     num_suffixes;
+        char    suffix[MAX_SUFFIX_STR + 2];
+        LINE    *tmp;
 
-	/* Skip the psuedo-target name. */
-	while (line[i] != '\0' &&
-		line[i] != ' ' &&
-		line[i] != '\t')
-	{
-		i++;
-	}
+        /* Skip the psuedo-target name. */
+        while (line[i] != '\0' &&
+                line[i] != ' ' &&
+                line[i] != '\t')
+        {
+                i++;
+        }
 
-	/* Skip leading whitespace. */
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
+        /* Skip leading whitespace. */
+        while (line[i] == ' ' || line[i] == '\t')
+                i++;
 
-	if (strncmp(line, ".SUFFIXES", 9) != 0)
-	{
-		/*
-		** The line does not contain a ".SUFFIXES"
-		** statement.  This should never happen
-		** because the input dispatcher only calls
-		** us if ".SUFFIXES" is encountered.
-		*/
-		return 0;
-	}
+        if (strncmp(line, ".SUFFIXES", 9) != 0)
+        {
+                /*
+                ** The line does not contain a ".SUFFIXES"
+                ** statement.  This should never happen
+                ** because the input dispatcher only calls
+                ** us if ".SUFFIXES" is encountered.
+                */
+                return 0;
+        }
 
-	/* Extract each suffix from input line. */
-	num_suffixes = 0;
-	while (line[i] != '\0')
-	{
-		/* Extract next suffix from input line. */
-		j = 0;
-		while (line[i] != ' ' && line[i] != '\t' &&
-			line[i] != '\0' && j < MAX_SUFFIX_STR + 1)
-		{
-			suffix[j++] = line[i++];
-		}
-		suffix[j] = '\0';
-		if (line[i] != ' ' && line[i] != '\t' &&
-			line[i] != '\0')
-		{
-			/* Error in ".SUFFIXES:" */
-			errmsg(MSG_ERR_BADSUFFIX, line, NOVAL);
-			return 0;
-		}
+        /* Extract each suffix from input line. */
+        num_suffixes = 0;
+        while (line[i] != '\0')
+        {
+                /* Extract next suffix from input line. */
+                j = 0;
+                while (line[i] != ' ' && line[i] != '\t' &&
+                        line[i] != '\0' && j < MAX_SUFFIX_STR + 1)
+                {
+                        suffix[j++] = line[i++];
+                }
+                suffix[j] = '\0';
+                if (line[i] != ' ' && line[i] != '\t' &&
+                        line[i] != '\0')
+                {
+                        /* Error in ".SUFFIXES:" */
+                        errmsg(MSG_ERR_BADSUFFIX, line, NOVAL);
+                        return 0;
+                }
 
-		/* Add the suffix to the suffixes list. */
-		if (suffix[0] == '.')
-			tmp = append_line(suffixes_list, &suffix[1]);
-		else
-			tmp = append_line(suffixes_list, suffix);
-		if (tmp == (LINE *)NULL)
-		{
-			errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
-			return 0;
-		}
-		suffixes_list = tmp;
-		num_suffixes++;
+                /* Add the suffix to the suffixes list. */
+                if (suffix[0] == '.')
+                        tmp = append_line(suffixes_list, &suffix[1]);
+                else
+                        tmp = append_line(suffixes_list, suffix);
+                if (tmp == (LINE *)NULL)
+                {
+                        errmsg(MSG_ERR_OUTOFMEMORY, (char *)NULL, NOVAL);
+                        return 0;
+                }
+                suffixes_list = tmp;
+                num_suffixes++;
 
-		/* Skip whitespace before next suffix. */
-		while (line[i] == ' ' || line[i] == '\t')
-			i++;
-	}
+                /* Skip whitespace before next suffix. */
+                while (line[i] == ' ' || line[i] == '\t')
+                        i++;
+        }
 
-	/*
-	** If no suffixes were specified, then the suffix list
-	** should be erased.
-	*/
-	if (num_suffixes < 1)
-	{
-		/* Erase the suffixes list. */
-		flush_suffixes();
-	}
+        /*
+        ** If no suffixes were specified, then the suffix list
+        ** should be erased.
+        */
+        if (num_suffixes < 1)
+        {
+                /* Erase the suffixes list. */
+                flush_suffixes();
+        }
 
-	return 1;
+        return 1;
 }
 
 /*
@@ -205,45 +205,45 @@ do_suffixes(line)
 ** Enumerates a filename suffix from the suffixes list.
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	index	Index in list of suffix to enumerate.
+**      Name    Description
+**      ----    -----------
+**      index   Index in list of suffix to enumerate.
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	NULL	Specified index is out of range.
-**	other	Pointer to null terminated character
-**		string containing filename suffix.
+**      Value   Meaning
+**      -----   -------
+**      NULL    Specified index is out of range.
+**      other   Pointer to null terminated character
+**              string containing filename suffix.
 */
 char *
 enum_suffix(index)
-	int	index;
+        int     index;
 {
-	LINE	*lptr;
-	int	i = 0;
+        LINE    *lptr;
+        int     i = 0;
 
-	/* Start at head of suffixes list. */
-	lptr = suffixes_list;
+        /* Start at head of suffixes list. */
+        lptr = suffixes_list;
 
-	/*
-	** Step through suffixes until we get to the one
-	** we want or run out of suffixes.
-	*/
-	while (i < index && lptr != (LINE *)NULL)
-	{
-		lptr = lptr->lnext;
-		i++;
-	}
+        /*
+        ** Step through suffixes until we get to the one
+        ** we want or run out of suffixes.
+        */
+        while (i < index && lptr != (LINE *)NULL)
+        {
+                lptr = lptr->lnext;
+                i++;
+        }
 
-	if (i != index || lptr == (LINE *)NULL)
-	{
-		/* Index out of range. */
-		return (char *)NULL;
-	}
+        if (i != index || lptr == (LINE *)NULL)
+        {
+                /* Index out of range. */
+                return (char *)NULL;
+        }
 
-	/* Return pointer to suffix name. */
-	return (char *)lptr->ldata;
+        /* Return pointer to suffix name. */
+        return (char *)lptr->ldata;
 }
 
 /*
@@ -251,29 +251,29 @@ enum_suffix(index)
 ** Outputs the contents of the suffix list.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 dump_suffixes(void)
 {
-	LINE	*lptr;
+        LINE    *lptr;
 
-	mputs(MSG_INFO_SUFFIXES);
-	lptr = suffixes_list;
-	if (lptr == (LINE *)NULL)
-	{
-		mputs(MSG_INFO_NOSUFFIXES);
-		return;
-	}
-	while (lptr != (LINE *)NULL)
-	{
-		mputs(MSG_INFO_SHOWSUFFIX);
-		mputs(lptr->ldata);
-		mputs("\n");
-		lptr = lptr->lnext;
-	}
+        mputs(MSG_INFO_SUFFIXES);
+        lptr = suffixes_list;
+        if (lptr == (LINE *)NULL)
+        {
+                mputs(MSG_INFO_NOSUFFIXES);
+                return;
+        }
+        while (lptr != (LINE *)NULL)
+        {
+                mputs(MSG_INFO_SHOWSUFFIX);
+                mputs(lptr->ldata);
+                mputs("\n");
+                lptr = lptr->lnext;
+        }
 }
 

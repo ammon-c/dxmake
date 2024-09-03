@@ -17,18 +17,18 @@ NOTES
 
 Rules for limited regular expressions:
 
-	*	Matches any string of characters.
+        *       Matches any string of characters.
 
-	?	Matches any single character.
+        ?       Matches any single character.
 
-	[nnn]	Matches any single character out of the set `nnn'.
+        [nnn]   Matches any single character out of the set `nnn'.
 
-	[n-m]	Matches any single character between `n' and `m',
-		inclusive.
+        [n-m]   Matches any single character between `n' and `m',
+                inclusive.
 
-	\n	Matches the character `n', where `n' may be a normal
-		character, or may be one of the special characters
-		`*', `?', or `['.
+        \n      Matches the character `n', where `n' may be a normal
+                character, or may be one of the special characters
+                `*', `?', or `['.
 
 Any other character matches itself.
 =========================================================================
@@ -40,16 +40,16 @@ Any other character matches itself.
 ** limited regular expression.
 **
 ** Parameters:
-**	Value	Meaning
-**	-----	-------
-**	str	String to be tested.
-**	rexp	Limited regular expression to test with.
+**      Value   Meaning
+**      -----   -------
+**      str     String to be tested.
+**      rexp    Limited regular expression to test with.
 **
-**	Value	Meaning
-**	-----	-------
-**	1	String matched specified expression.
-**	0	String doesn't match specified expression.
-**	-1	Error in expression.
+**      Value   Meaning
+**      -----   -------
+**      1       String matched specified expression.
+**      0       String doesn't match specified expression.
+**      -1      Error in expression.
 */
-int	check_rexp(char *str, char *rexp);
+int     check_rexp(char *str, char *rexp);
 

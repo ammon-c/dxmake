@@ -44,18 +44,18 @@ environment specific details of memory handling.
 ** Initializes the memory management module.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	1	Successful.
-**	0	Error occurred.
+**      Value   Meaning
+**      -----   -------
+**      1       Successful.
+**      0       Error occurred.
 */
 int
 mem_init(void)
 {
-	return 1;
+        return 1;
 }
 
 /*
@@ -63,18 +63,18 @@ mem_init(void)
 ** Shuts down the memory management module.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	1	Successful.
-**	0	Error occurred.
+**      Value   Meaning
+**      -----   -------
+**      1       Successful.
+**      0       Error occurred.
 */
 int
 mem_deinit(void)
 {
-	return 1;
+        return 1;
 }
 
 /*
@@ -82,27 +82,27 @@ mem_deinit(void)
 ** Allocates a block of memory.
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	bytes	Number of bytes of memory to allocate.
+**      Name    Description
+**      ----    -----------
+**      bytes   Number of bytes of memory to allocate.
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	NULL	An error occurred (i.e. not enough memory left).
-**	other	Pointer to allocated memory.
+**      Value   Meaning
+**      -----   -------
+**      NULL    An error occurred (i.e. not enough memory left).
+**      other   Pointer to allocated memory.
 */
 void *
 mem_alloc(size_t bytes)
 {
 #ifndef WIN
-	return malloc(bytes);
+        return malloc(bytes);
 #else
-	/*
-	** The memory type LPTR causes LocalAlloc to return
-	** a fixed near pointer instead of a memory handle.
-	*/
-	return (void *)LocalAlloc(LPTR, bytes);
+        /*
+        ** The memory type LPTR causes LocalAlloc to return
+        ** a fixed near pointer instead of a memory handle.
+        */
+        return (void *)LocalAlloc(LPTR, bytes);
 #endif /* WIN */
 }
 
@@ -111,23 +111,23 @@ mem_alloc(size_t bytes)
 ** Frees a block of memory previously allocated by mem_alloc().
 **
 ** Parameters:
-**	Name	Description
-**	----	-----------
-**	ptr	Pointer to memory block to be freed.
+**      Name    Description
+**      ----    -----------
+**      ptr     Pointer to memory block to be freed.
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 mem_free(void *ptr)
 {
 #ifndef WIN
-	free(ptr);
+        free(ptr);
 #else
-	/*
-	** Free a pointer allocated as type "LPTR" by LocalAlloc.
-	*/
-	LocalFree((HLOCAL)ptr);
+        /*
+        ** Free a pointer allocated as type "LPTR" by LocalAlloc.
+        */
+        LocalFree((HLOCAL)ptr);
 #endif /* WIN */
 }
 
@@ -138,26 +138,26 @@ mem_free(void *ptr)
 ** it the maximum amount of free memory.
 **
 ** Parameters:
-**	NONE
+**      NONE
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 mem_heapmin(void)
 {
 #ifndef WIN
-	/*
-	** Before we execute the subprocess, minimize our heap so
-	** the subprocess will have as much free memory as we can
-	** afford.  The _heapmin() function is documented abysmally
-	** in the Microsoft C documentation, but it looks like the
-	** heap gets extended back out if we try to allocate memory
-	** again later, which is what we want; it would be nice to
-	** know if that's the way it really works though, otherwise
-	** we could run into trouble with memory someday.
-	*/
-	_heapmin();
+        /*
+        ** Before we execute the subprocess, minimize our heap so
+        ** the subprocess will have as much free memory as we can
+        ** afford.  The _heapmin() function is documented abysmally
+        ** in the Microsoft C documentation, but it looks like the
+        ** heap gets extended back out if we try to allocate memory
+        ** again later, which is what we want; it would be nice to
+        ** know if that's the way it really works though, otherwise
+        ** we could run into trouble with memory someday.
+        */
+        _heapmin();
 #endif /* WIN */
 }
 

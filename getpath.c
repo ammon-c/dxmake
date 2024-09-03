@@ -20,48 +20,48 @@ of the author.
 ** Deletes the filename and extension from a filespec.
 **
 ** Parameters:
-**	Value		Meaning
-**	-----		-------
-**	filespec	Filespec to be modified.
+**      Value           Meaning
+**      -----           -------
+**      filespec        Filespec to be modified.
 **
 ** Returns:
-**	NONE
+**      NONE
 */
 void
 getpath(filespec)
-	char	*filespec;
+        char    *filespec;
 {
-	int	found = -1;
-	int	pos = 0;
+        int     found = -1;
+        int     pos = 0;
 
-	while (filespec[pos])
-	{
-		if (filespec[pos] == '\\')
-		{
-			found = pos+1;
-		}
-		else if (filespec[pos] == ':' && filespec[pos+1] != '\\')
-		{
-			found = pos+1;
-		}
-		pos++;
-	}
+        while (filespec[pos])
+        {
+                if (filespec[pos] == '\\')
+                {
+                        found = pos+1;
+                }
+                else if (filespec[pos] == ':' && filespec[pos+1] != '\\')
+                {
+                        found = pos+1;
+                }
+                pos++;
+        }
 
-	/*
-	** If separator wasn't found, then this filespec
-	** probably doesn't have a path prepended to
-	** it.
-	*/
-	if (found == -1)
-		*filespec = '\0';
-	else
-	{
-		filespec[found] = '\0';
-		if (filespec[found-1] != '\\' && filespec[found-1] != ':')
-		{
-			filespec[found-1] = '\\';
-			filespec[found] = '\0';
-		}
-	}
+        /*
+        ** If separator wasn't found, then this filespec
+        ** probably doesn't have a path prepended to
+        ** it.
+        */
+        if (found == -1)
+                *filespec = '\0';
+        else
+        {
+                filespec[found] = '\0';
+                if (filespec[found-1] != '\\' && filespec[found-1] != ':')
+                {
+                        filespec[found-1] = '\\';
+                        filespec[found] = '\0';
+                }
+        }
 }
 

@@ -32,59 +32,59 @@ of the author.
 ** Finds the first matching file for the specified filespec.
 **
 ** Parameters:
-**	Name		Description
-**	----		-----------
-**	filespec	Filespec to match.
-**	findbfr		Pointer to 'find_t' structure as defined
-**			in Microsoft C "dos.h" file.
+**      Name            Description
+**      ----            -----------
+**      filespec        Filespec to match.
+**      findbfr         Pointer to 'find_t' structure as defined
+**                      in Microsoft C "dos.h" file.
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	0	Match found; data returned in findbfr.
-**	1	No match.
+**      Value   Meaning
+**      -----   -------
+**      0       Match found; data returned in findbfr.
+**      1       No match.
 */
 int
 w_findfirst(filespec, findbfr)
-	char	*filespec;
-	struct find_t *findbfr;
+        char    *filespec;
+        struct find_t *findbfr;
 {
-	int	result;
-	char	str[128];
+        int     result;
+        char    str[128];
 
-	strcpy(str, filespec);
-	getpath(str);
-	strcat(str, "*.*");
-	if ((result = _dos_findfirst(str,
-			_A_NORMAL | _A_ARCH | _A_SUBDIR |
-			_A_HIDDEN | _A_SYSTEM | _A_VOLID | _A_RDONLY,
-			findbfr)))
-	{
-		/* No match. */
-		return 1;
-	}
+        strcpy(str, filespec);
+        getpath(str);
+        strcat(str, "*.*");
+        if ((result = _dos_findfirst(str,
+                        _A_NORMAL | _A_ARCH | _A_SUBDIR |
+                        _A_HIDDEN | _A_SYSTEM | _A_VOLID | _A_RDONLY,
+                        findbfr)))
+        {
+                /* No match. */
+                return 1;
+        }
 
-	while (!result)
-	{
-		/* Build filename. */
-		strcpy(str, filespec);
-		getpath(str);
-		strcat(str, findbfr->name);
-		strlwr(str);
+        while (!result)
+        {
+                /* Build filename. */
+                strcpy(str, filespec);
+                getpath(str);
+                strcat(str, findbfr->name);
+                strlwr(str);
 
-		/* See if this file matches wildcard expression. */
-		if (check_rexp(str, filespec) == 1)
-		{
-			/* Found a match. */
-			return 0;
-		}
+                /* See if this file matches wildcard expression. */
+                if (check_rexp(str, filespec) == 1)
+                {
+                        /* Found a match. */
+                        return 0;
+                }
 
-		/* Get next file. */
-		result = _dos_findnext(findbfr);
-	}
+                /* Get next file. */
+                result = _dos_findnext(findbfr);
+        }
 
-	/* No match. */
-	return 1;
+        /* No match. */
+        return 1;
 }
 
 /*
@@ -93,52 +93,52 @@ w_findfirst(filespec, findbfr)
 ** to w_findfirst().
 **
 ** Parameters:
-**	Name		Description
-**	----		-----------
-**	filespec	Filespec to match.
-**	findbfr		Pointer to 'find_t' structure as defined
-**			in Microsoft C "dos.h" file, and processed
-**			by an initial call to w_findfirst().
+**      Name            Description
+**      ----            -----------
+**      filespec        Filespec to match.
+**      findbfr         Pointer to 'find_t' structure as defined
+**                      in Microsoft C "dos.h" file, and processed
+**                      by an initial call to w_findfirst().
 **
 ** Returns:
-**	Value	Meaning
-**	-----	-------
-**	0	Match found; data returned in findbfr.
-**	1	No match.
+**      Value   Meaning
+**      -----   -------
+**      0       Match found; data returned in findbfr.
+**      1       No match.
 */
 int
 w_findnext(filespec, findbfr)
-	char		*filespec;
-	struct find_t	*findbfr;
+        char            *filespec;
+        struct find_t   *findbfr;
 {
-	int	result;
-	char	str[128];
+        int     result;
+        char    str[128];
 
-	if ((result = _dos_findnext(findbfr)))
-	{
-		/* No match. */
-		return 1;
-	}
+        if ((result = _dos_findnext(findbfr)))
+        {
+                /* No match. */
+                return 1;
+        }
 
-	while (!result)
-	{
-		/* Build filename. */
-		strcpy(str, filespec);
-		getpath(str);
-		strcat(str, findbfr->name);
-		strlwr(str);
+        while (!result)
+        {
+                /* Build filename. */
+                strcpy(str, filespec);
+                getpath(str);
+                strcat(str, findbfr->name);
+                strlwr(str);
 
-		/* See if this file matches wildcard expression. */
-		if (check_rexp(str, filespec) == 1)
-		{
-			/* Found a match. */
-			return 0;
-		}
+                /* See if this file matches wildcard expression. */
+                if (check_rexp(str, filespec) == 1)
+                {
+                        /* Found a match. */
+                        return 0;
+                }
 
-		/* Get next file. */
-		result = _dos_findnext(findbfr);
-	}
+                /* Get next file. */
+                result = _dos_findnext(findbfr);
+        }
 
-	return 1;
+        return 1;
 }
 
